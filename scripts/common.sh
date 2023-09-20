@@ -38,6 +38,27 @@ sudo sed -i \
 
 grep nrconf{restart} $NFILE
 
+
+
+if ! curl --connect-timeout 2 google.com &>/dev/null; then
+   # C. 国内
+   MIRROR_URL=http://mirror.nju.edu.cn/ubuntu
+   CODE_NAME=$(lsb_release -cs)
+   COMPONENT="main restricted universe multiverse"
+
+   # 生成软件仓库源
+   sudo tee /etc/apt/sources.list >/dev/null <<EOF
+deb $MIRROR_URL $CODE_NAME $COMPONENT
+deb $MIRROR_URL $CODE_NAME-updates $COMPONENT
+deb $MIRROR_URL $CODE_NAME-backports $COMPONENT
+deb $MIRROR_URL $CODE_NAME-security $COMPONENT
+EOF
+fi
+
+cat /etc/apt/sources.list
+
+
+
 # 手动更新
 sudo apt -y update
 
