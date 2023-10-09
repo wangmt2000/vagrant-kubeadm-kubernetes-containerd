@@ -190,7 +190,9 @@ fi
 
 TFILE=crictl-v1.28.0-linux-amd64.tar.gz
 
-curl -LO# $CURL/$TFILE
+#curl -LO# $CURL/$TFILE
+
+curl -LO# https://gitee.com/wangmt2000/share/releases/download/ccrictl/crictl-v1.28.0-linux-amd64.tar.gz
 
 # 解压 crictl
 tar -xf $TFILE
@@ -248,14 +250,15 @@ sudo apt-get install -y jq
 
 
 # 官方考试版本-CKA
-CKx_URL=https://training.linuxfoundation.cn/certificates/1
+#CKx_URL=https://training.linuxfoundation.cn/certificates/1
 
 :<<EOF
 # 官方考试版本-CKS
 CKx_URL=https://training.linuxfoundation.cn/certificates/16
 EOF
 
-KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
+#KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
+KV=1.27
 
 echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
 
