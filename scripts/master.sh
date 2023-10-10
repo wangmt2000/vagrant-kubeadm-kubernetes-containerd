@@ -15,6 +15,7 @@ KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}'
 
 echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
 
+KV=1.28
 # 列出所有小版本
 sudo apt-cache madison kubelet | grep ${KV#v}
 
