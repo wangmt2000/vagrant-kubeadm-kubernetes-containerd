@@ -1,0 +1,525 @@
+#!/bin/bash
+
+SCORE=0
+
+function print_PASS() {
+  echo -ne ' \033[1;32mPASS\033[0;39m\t'
+}
+function print_FAIL() {
+  echo -ne ' \033[1;31mFAIL\033[0;39m\t'
+}
+function LINE {
+  STTY_SIZE=$(stty size)
+  STTY_COLUMNS=$(echo $STTY_SIZE | cut -f2 -d" ")
+  yes = 2>/dev/null | sed $STTY_COLUMNS'q' | tr -d '\n'
+  printf "\n"
+}
+
+function LCOURSE() {
+  echo -n " The results of your CKA v1.24: "
+  if [ ${SCORE} -ge 66 ]; then
+    print_PASS ; echo -e " Your score: \033[1;32m${SCORE}\033[0;39m"
+  else
+    print_FAIL ; echo -e " Your score: \033[1;31m${SCORE}\033[0;39m"
+  fi
+}
+
+function MQ1 {
+  if [ "$MQ" = "1" ]; then MQ=1; else MQ=0; fi
+}
+
+#### GRADE ####
+function grade_RBAC {
+  MQ=1
+  if kubectl describe clusterrole deployment-clusterrole 2>/dev/null | grep daemonsets | grep -wq \\[create\] \
+    && kubectl describe clusterrole deployment-clusterrole 2>/dev/null | grep deployments | grep -wq \\[create\] \
+    && kubectl describe clusterrole deployment-clusterrole 2>/dev/null | grep daemonsets | grep -wq \\[create\]; then
+    MQ1
+  else
+    print_FAIL; echo 'Task1.  - 创建一个名字为 deployment-clusterrole 的新 ClusterRole'
+    MQ=0
+  fi
+	if kubectl -n app-team1 get serviceaccounts 2>/dev/null | grep -wq cicd-token; then
+    MQ1
+  else
+    print_FAIL; echo 'Task1.  - 创建一个名为 cicd-token 的新 ServiceAccount'
+    MQ=0
+  fi
+	RBN=$(kubectl -n app-team1 get rolebindings.rbac.authorization.k8s.io 2>/dev/null | awk '/deployment-clusterrole/ {print $1}')
+	if [ ! -z $RBN ] && kubectl -n app-team1 describe rolebindings.rbac.authorization.k8s.io $RBN 2>/dev/null | grep -q ServiceAccount.*cicd-token; then
+    MQ1
+  else
+    print_FAIL; echo 'Task1.  - 将新的 ClusterRole 绑定到新的 ServiceAccount'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo 'Task1.  - RBAC'
+	fi
+}
+
+function grade_drain {
+  MQ=1
+	if kubectl get nodes k8s-worker1 2>/dev/null | grep -wq SchedulingDisabled; then
+    MQ1
+  else
+    print_FAIL; echo 'Task2.  - 将名为 k8s-worker1 的 node 设置为不可用'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo 'Task2.  - drain'
+	fi
+}
+
+function grade_upgrade {
+  MQ=1
+	if kubectl get nodes k8s-master 2>/dev/null | grep -qw v1.24.2 \
+    && kubectl get nodes k8s-worker1 2>/dev/null | grep -qw v1.24.1 \
+    && kubectl get nodes k8s-worker2 2>/dev/null | grep -qw v1.24.1; then
+    MQ1
+  else
+    print_FAIL; echo 'Task3.  - 仅将主节点上的所有 kubernetes 升级到版本 1.24.2'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo 'Task3.  - upgrade'
+	fi
+}
+
+function grade_snapshot {
+  MQ=1
+  if ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+    --cacert=/opt/KUIN00601/ca.crt \
+    --cert=/opt/KUIN00601/etcd-client.crt --key=/opt/KUIN00601/etcd-client.key \
+    snapshot status /srv/backup/etcd-snapshot.db &>/dev/null; then
+    MQ1
+  else
+    print_FAIL; echo 'Task4.  - 将快照保存到 /srv/etcd-snapshot.db'
+    MQ=0
+  fi
+  if ETCDCTL_API=3 etcdctl \
+    --endpoints=https://127.0.0.1:2379 \
+    --cacert=/opt/KUIN00601/ca.crt \
+    --cert=/opt/KUIN00601/etcd-client.crt \
+    --key=/opt/KUIN00601/etcd-client.key get /T4 2>/dev/null | grep -wq haha; then
+    MQ1
+  else
+    print_FAIL; echo 'Task4.  - 还原 /srv/etcd-snapshot-previous.db 的先前快照'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo 'Task4.  - snapshot'
+	fi
+}
+
+function grade_network-policy {
+    MQ=1
+    kubectl -n internal run http0 --image=nginx \
+        --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}' &>/dev/null
+    kubectl -n internal run http1 --image=registry.cn-hangzhou.aliyuncs.com/k-cka/http1 \
+        --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}' &>/dev/null
+    if kubectl describe networkpolicies allow-port-from-namespace -n internal 2>/dev/null | grep -wq 8080 \
+            && kubectl get namespaces internal --show-labels 2>/dev/null | grep -wq "$(kubectl describe networkpolicy allow-port-from-namespace -n internal 2>/dev/null | grep NamespaceSelector | awk '{print $2}')" \
+            && kubectl describe networkpolicies allow-port-from-namespace -n internal 2>/dev/null | grep -wq Policy\ Types:\ Ingress; then
+        MQ1
+    else
+        print_FAIL; echo 'Task5.  - 创建一个名为 allow-port-from-namespace 的新 NetworkPolicy'
+        MQ=0
+    fi
+    if ! nc -w 1 172.16.126.3 8080 &>/dev/null \
+            && kubectl -n internal exec -it http0 -- curl $(kubectl -n internal describe pod http1 2>/dev/null | awk '/^IP/ {print $2}'):8080 &>/dev/null; then
+        MQ1
+    else
+        print_FAIL; echo 'Task5.  - 不允许不来自 namespace internal 的 Pods 的访问'
+        MQ=0
+    fi
+    if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo 'Task5.  - network-policy'
+	fi
+}
+
+function grade_service {
+  MQ=1
+  if kubectl describe deployments.apps front-end 2>/dev/null | grep Port | grep -wq 80; then
+    MQ1
+  else
+    print_FAIL; echo 'Task6.  - 重新配置现有的 deployment front-end'
+    MQ=0
+  fi
+  if kubectl get services front-end-svc 2>/dev/null | grep -w NodePort | grep -q 80; then
+    MQ1
+  else
+    print_FAIL; echo 'Task6.  - 重新配置现有的 deployment front-end'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo 'Task6.  - service'
+	fi
+}
+
+function grade_ingress-nginx {
+  MQ=1
+  kubectl run hi --image=registry.cn-hangzhou.aliyuncs.com/k-cka/ping -n ing-internal \
+    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}' &>/dev/null
+	if kubectl describe ingresses ping -n ing-internal 2>/dev/null | grep /hi | grep -wq hi:5678; then
+    MQ1
+  else
+    print_FAIL; echo 'Task7.  - describe: 创建一个新的 nginx ingress 资源'
+    MQ=0
+  fi
+	if curl -kL $(kubectl get pods -A -o wide 2>/dev/null | awk '/ingress-nginx-controller/ {print $7}')/hi 2>/dev/null | grep -wq hi; then
+    MQ1
+  else
+    print_FAIL; echo 'Task7.  - curl: 创建一个新的 nginx ingress 资源'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo 'Task7.  - ingress-nginx'
+	fi
+}
+
+function grade_replicas {
+  MQ=1
+	if kubectl get deployments.apps webserver 2>/dev/null | grep -qw 6/6; then
+    MQ1
+  else
+    print_FAIL; echo 'Task8.  - 将 deployment webserver 扩展至 6 pods'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo 'Task8.  - replicas'
+	fi
+}
+
+function grade_schedule {
+  MQ=1
+	if kubectl get pod nginx-kusc00401 -o wide 2>/dev/null | grep -q k8s-worker2; then
+    MQ1
+  else
+    print_FAIL; echo 'Task9.  - 调度一个 pod nginx-kusc00401'
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo 'Task9.  - schedule'
+	fi
+}
+
+function grade_NoSchedule {
+  MQ=1
+	if grep -q 1 /opt/KUSC00402/kusc00402.txt 2>/dev/null; then
+    MQ1
+  else
+    print_FAIL; echo Task10. - 有多少个 nodes 已准备就绪, 不包括被打上 tainted: NoSchedule 的节点
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo Task10. - NoSchedule
+	fi
+}
+
+function grade_multi_pods {
+  MQ=1
+	if kubectl describe pod kucc1 2>/dev/null | grep -wq nginx: \
+    && kubectl describe pod kucc1 2>/dev/null | grep Image: | grep -wq nginx; then
+    MQ1
+  else
+    print_FAIL; echo Task11. - 容器名称和镜像: nginx
+    MQ=0
+  fi
+	if kubectl describe pod kucc1 2>/dev/null | grep -wq redis: \
+    && kubectl describe pod kucc1 2>/dev/null | grep Image: | grep -wq redis; then
+    MQ1
+  else
+    print_FAIL; echo Task11. - 容器名称和镜像: redis
+    MQ=0
+  fi
+	if kubectl describe pod kucc1 2>/dev/null | grep -wq memcached: \
+    && kubectl describe pod kucc1 2>/dev/null | grep Image: | grep -wq memcached; then
+    MQ1
+  else
+    print_FAIL; echo Task11. - 容器名称和镜像: memcached
+    MQ=0
+  fi
+	if kubectl describe pod kucc1 2>/dev/null | grep -wq consul: \
+    && kubectl describe pod kucc1 2>/dev/null | grep Image: | grep -wq consul; then
+    MQ1
+  else
+    print_FAIL; echo Task11. - 容器名称和镜像: consul
+    MQ=0
+  fi
+	if kubectl get pod kucc1 2>/dev/null | grep kucc1 2>/dev/null | grep -wq 4/4; then
+    MQ1
+  else
+    print_FAIL; echo Task11. - 创建一个名字为 kucc1 的 pod
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo Task11. - multi_pods
+	fi
+}
+
+function grade_pv {
+  MQ=1
+	if kubectl get pv app-data 2>/dev/null | grep -wq Available; then
+    MQ1
+  else
+    print_FAIL; echo Task12. - 创建pv app-data 
+    MQ=0
+  fi
+	if kubectl get pv app-data 2>/dev/null | grep -wq 1Gi; then
+    MQ1
+  else
+    print_FAIL; echo Task11. -  容量为 1Gi
+    MQ=0
+  fi
+	if kubectl get pv app-data 2>/dev/null | grep -wq RWX; then
+    MQ1
+  else
+    print_FAIL; echo Task11. - 访问模式为 ReadWriteMany
+    MQ=0
+  fi
+	if kubectl describe pv app-data 2>/dev/null | grep Type: | grep -wq HostPath; then
+    MQ1
+  else
+    print_FAIL; echo Task12. -  volume 类型为 hostPath
+    MQ=0
+  fi
+	if kubectl describe pv app-data 2>/dev/null | grep Path: | grep -wq /srv/app-data; then
+    MQ1
+  else
+    print_FAIL; echo Task12. - 位于/srv/app-data
+    MQ=0
+  fi
+	if kubectl describe pv app-data 2>/dev/null | grep HostPathType: | grep -wq DirectoryOrCreate; then
+    MQ1
+  else
+    print_FAIL; echo Task12. - If nothing exists, an empty directory will be created
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 4 )
+		print_PASS; 
+		echo Task12. - pv
+	fi
+}
+
+function grade_Dynamic-Volume {
+  MQ=1
+	if kubectl get pvc pv-volume 2>/dev/null | grep -wq csi-hostpath-sc; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - pvc class: csi-hostpath-sc
+    MQ=0
+  fi
+	if kubectl get pvc pv-volume 2>/dev/null | grep -wq 10Mi; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - pvc 容量: 10Mi
+    MQ=0
+  fi
+	if kubectl describe pod web-server 2>/dev/null | grep Image: | grep -wq nginx; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - pod image: nginx
+    MQ=0
+  fi
+	if kubectl describe pod web-server 2>/dev/null | grep task-pv-storage | grep -wq /usr/share/nginx/html; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - pod 挂载路径: /usr/share/nginx/html
+    MQ=0
+  fi
+	if kubectl get pvc pv-volume 2>/dev/null | grep -wq RWO; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - pod 具有 ReadWriteOnce 权限
+    MQ=0
+  fi
+	if kubectl get storageclasses.storage.k8s.io csi-hostpath-sc 2>/dev/null | grep -wq true; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - 使用 kubectl edit 将 PVC 的容量扩展为 70Mi
+    MQ=0
+  fi
+	if kubectl get storageclasses.storage.k8s.io -A 2>/dev/null | grep -wq true; then
+    MQ1
+  else
+    print_FAIL; echo Task13. - 使用 kubectl edit 将 PersistentVolumeClaim 的容量扩展
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo Task13. - Dynamic-Volume
+	fi
+}
+
+function grade_logs {
+  MQ=1
+	if grep -wq unable-to-access-website /opt/KUTR00101/bar 2>/dev/null; then
+    MQ1
+  else
+    print_FAIL; echo Task14. - 提取与错误 unable-to-access-website 相对应的日志行
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 5 )
+		print_PASS; 
+		echo Task14. - logs
+	fi
+}
+
+function grade_Sidecar {
+  MQ=1
+	if kubectl describe pod big-corp-app 2>/dev/null | grep -wq sidecar:; then
+    MQ1
+  else
+    print_FAIL; echo Task15. - 将 busybox 容器名为 sidecar 添加到 big-corp-app
+    MQ=0
+  fi
+	if kubectl describe pod big-corp-app 2>/dev/null | grep -A 2 /bin/sh | grep -A 1 \\-c | grep -wq 'tail -f /var/log/legacy-app.log'; then
+    MQ1
+  else
+    print_FAIL; echo 'Task15. - /bin/sh -c tail -f /var/log/legacy-app.log'
+    MQ=0
+  fi
+	if kubectl describe pod big-corp-app 2>/dev/null | grep -A 1 Volumes: | grep -wq logs:; then
+    MQ1
+  else
+    print_FAIL; echo Task15. - 使用名为 logs 的 volume mount
+    MQ=0
+  fi
+	if kubectl exec big-corp-app -c sidecar -- tail /var/log/legacy-app.log &>/dev/null; then
+    MQ1
+  else
+    print_FAIL; echo Task15. - /var/log/legacy-app.log 可用于 sidecar 容器
+    MQ=0
+  fi
+	if kubectl get pod big-corp-app 2>/dev/null | grep -wq 2/2; then
+    MQ1
+  else
+    print_FAIL; echo Task15. - 将一个 busybox sidecar 添加到现有的 big-corp-app
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 7 )
+		print_PASS; 
+		echo Task15. - Sidecar
+	fi
+}
+
+function grade_Metric {
+  MQ=1
+	if grep -wq bar /opt/KUTR00401/KUTR00401.txt 2>/dev/null; then
+    MQ1
+  else
+    print_FAIL; echo Task16. - 占用 CPU 最高的 pod 名称写入到文件
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 5 )
+		print_PASS; 
+		echo Task16. - Metric
+	fi
+}
+
+function grade_Daemon {
+  MQ=1
+	if kubectl get nodes k8s-worker1 2>/dev/null | grep -wq Ready; then
+    MQ1
+  else
+    print_FAIL; echo Task17. - k8s-worker1 is in state NotReady
+    MQ=0
+  fi
+  if [ "$MQ" = "1" ]; then
+		SCORE=$(expr $SCORE + 13 )
+		print_PASS; 
+		echo Task17. - Daemon \(kubelet, containerd, docker\)
+	fi
+}
+
+echo
+echo -e " Spend Time: \033[1;32m$(uptime -p)\033[0;39m  $(date)"
+LINE
+    if [ "$#" = "0" ]; then
+        grade_RBAC
+        grade_drain
+        grade_upgrade
+        grade_snapshot
+        grade_network-policy
+        grade_service
+        grade_ingress-nginx
+        grade_replicas
+        grade_schedule
+        grade_NoSchedule
+        grade_multi_pods
+        grade_pv
+        grade_Dynamic-Volume
+        grade_logs
+        grade_Sidecar
+        grade_Metric
+        grade_Daemon
+    else
+        case $1 in
+        1)
+            grade_RBAC ;;
+        2)
+            grade_drain ;;
+        3)
+            grade_upgrade ;;
+        4)
+            grade_snapshot ;;
+        5)
+            grade_network-policy ;;
+        6)
+            grade_service ;;
+        7)
+            grade_ingress-nginx ;;
+        8)
+            grade_replicas ;;
+        9)
+            grade_schedule ;;
+        10)
+            grade_NoSchedule ;;
+        11)
+            grade_multi_pods ;;
+        12)
+            grade_pv ;;
+        13)
+            grade_Dynamic-Volume ;;
+        14)
+            grade_logs ;;
+        15)
+            grade_Sidecar ;;
+        16)
+            grade_Metric ;;
+        17)
+            grade_Daemon ;;
+        *)
+            exit ;;
+        esac
+    fi 
+LINE
+LCOURSE
+echo

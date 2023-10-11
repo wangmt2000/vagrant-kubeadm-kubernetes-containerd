@@ -1,6 +1,6 @@
 ---
 # cluster_name is used to group the nodes in a folder within VirtualBox:
-cluster_name: Kubernetes Cluster
+cluster_name: CKA Cluster
 # Uncomment to set environment variables for services such as crio and kubelet.
 # For example, configure the cluster to pull images via a proxy.
 # environment: |

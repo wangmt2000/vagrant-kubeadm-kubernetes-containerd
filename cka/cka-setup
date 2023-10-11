@@ -1,0 +1,323 @@
+#!/bin/bash
+
+# define var
+## USER PASSWORD
+USER_PASSWORD=vagrant
+
+function pad {
+  echo -e " $(date +%H:%M)\t\033[1;32mINFO:\033[0;39m\t[\033[1;36m${1}\033[0;39m] - \033[1;32m${2}\033[0;39m"
+}
+function LINE {
+  STTY_SIZE=$(stty size)
+  STTY_COLUMNS=$(echo $STTY_SIZE | cut -f2 -d" ")
+  yes = 2>/dev/null | sed $STTY_COLUMNS'q' | tr -d '\n'
+  printf "\n"
+}
+function separator {
+    echo ====== $(date "+%b %d %T") $(hostname) $1 ====== >&4 2>&1
+}
+
+function Rbac {
+    # 1
+    kubectl create ns app-team1
+}
+
+function Snapshot {
+    # 4
+    ##
+    F4=/opt/KUIN00601
+    while ps aux | grep -v grep | grep apt; do sleep 1s; done
+    sudo apt install etcd-client
+    sudo mkdir -m 777 -p /srv/data
+    sudo cp /content/etcd-snapshot-previous.db -P /srv/data
+    sudo mkdir ${F4}
+    sudo cp /etc/kubernetes/pki/etcd/ca.crt ${F4}
+    sudo cp /etc/kubernetes/pki/etcd/server.crt ${F4}/etcd-client.crt
+    sudo cp /etc/kubernetes/pki/etcd/server.key ${F4}/etcd-client.key
+    sudo chmod a+r ${F4}/*
+    sudo mkdir -m 777 -p /srv/backup
+}
+
+function Network-Policy {
+    # 5
+    kubectl create namespace internal
+}
+
+function Service {
+    # 6
+    kubectl create deploy front-end --image=nginx
+}
+
+function Ingress-Nginx {
+    # 7
+    ## 参考 https://kubernetes.io/zh/docs/concepts/services-networking/ingress-controllers/
+    ##    Kubernetes 作为一个项目，目前支持和维护 AWS， GCE 和 <a href="https://git.k8s.io/ingress-nginx/README.md#readme">nginx</a> Ingress 控制器。
+    export URL1=registry.cn-hangzhou.aliyuncs.com/ckalab
+    #export URL1=registry.cn-hangzhou.aliyuncs.com/k-ingress-nginx
+    export URL2=registry.k8s.io/ingress-nginx
+    export IMGV=v1.3.0
+    for i in controller kube-webhook-certgen; do
+        sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker2 "
+            sudo ctr -n k8s.io image pull $URL1/$i:$IMGV
+            sudo ctr -n k8s.io image tag $URL1/$i:$IMGV $URL2/$i:$IMGV"   
+    done
+    ## env
+    kubectl create ns ing-internal
+    kubectl -n ing-internal run hi \
+    #--image=registry.cn-hangzhou.aliyuncs.com/k-cka/ping \
+    --image= registry.cn-hangzhou.aliyuncs.com/ckalab/ping \
+    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}'
+    kubectl -n ing-internal expose pod hi --port=5678
+}
+
+function Replicas {
+    # 8
+    kubectl create deployment webserver --image=nginx
+}
+
+function Schedule {
+    # 9
+    kubectl label node k8s-worker2 disk=spinning
+}
+
+function NoSchedule {
+    # 10
+    F10=/opt/KUSC00402
+    sudo mkdir ${F10}
+    sudo chmod a+w ${F10}
+}
+
+function PV {
+    # 12
+    sudo mkdir /srv/app-data
+}
+
+function Dynamic-Volume {
+    # 13
+    ## nfs-server
+    while ps aux | grep -v grep | grep apt; do sleep 1s; done
+    sudo apt install -y nfs-kernel-server
+    echo '/data *(rw,no_root_squash)' | sudo tee -a /etc/exports
+    sudo mkdir -m 777 /data 2>/dev/null
+    sudo systemctl enable nfs-server
+    sudo systemctl restart nfs-server
+
+    ## nfs-common
+    for i in $(grep -v master /etc/hosts | awk '/k8s/ {print $1}'); do
+        sshpass -p ${USER_PASSWORD} ssh vagrant@${i} "
+            if sudo apt list nfs-common | grep -wq installed; then
+                echo nfs-common is already the newest version
+            else
+                while ps aux | grep -v grep | grep apt; do sleep 1s; done
+                sudo apt install nfs-common -y
+            fi"
+    done
+
+    ## NFS subdir 外部驱动
+    ### k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner
+    export URL1=registry.cn-hangzhou.aliyuncs.com/ckalab
+    export URL2=k8s.gcr.io/sig-storage
+    export IMGN=nfs-subdir-external-provisioner
+    export IMGV=v4.0.2
+    sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker2 "
+        sudo ctr -n k8s.io image pull $URL1/$IMGN:$IMGV
+        sudo ctr -n k8s.io image tag $URL1/$IMGN:$IMGV $URL2/$IMGN:$IMGV"
+    ### https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner
+    sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker1 "
+        sudo ctr -n k8s.io image pull $URL1/$IMGN:$IMGV
+        sudo ctr -n k8s.io image tag $URL1/$IMGN:$IMGV $URL2/$IMGN:$IMGV"
+    for i in rbac deployment class; do
+        cp /content/$i.yaml /tmp
+        if [ "$i" = "deployment" ]; then
+            sed -i -e "/NFS_SERVER/{N; s?value:.*?value: $(grep $(hostname -s) /etc/hosts | cut -d \  -f1)?}" \
+                -e '/NFS_PATH/{N; s?value:.*?value: /data?}' \
+                -e "/server/s?:.*?: $(grep $(hostname -s) /etc/hosts | cut -d \  -f1)?" \
+                -e '/path/s?:.*?: /data?' \
+                -e '/containers/i\      nodeSelector:' \
+                -e '/containers/i\        kubernetes.io/hostname: k8s-worker2' /tmp/deployment.yaml
+        fi
+        if [ "$i" = "class" ]; then
+            sed -i '/name:/s?:.*?: csi-hostpath-sc?' /tmp/class.yaml
+        fi
+        kubectl apply -f /tmp/${i}.yaml
+    done
+}
+
+function Logs {
+    # 14
+    F14=/opt/KUTR00101
+    sudo mkdir ${F14}
+    sudo chmod a+w ${F14}
+    kubectl run bar \
+    --image=registry.cn-hangzhou.aliyuncs.com/ckalab/bar \
+    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}'
+}
+
+function Sidecar {
+    # 15
+    kubectl apply -f /content/sidecar.yml
+}
+
+function Metric {
+    # 16
+    ## file
+    F16=/opt/KUTR00401
+    sudo mkdir ${F16}
+    sudo chmod a+w ${F16}
+    echo exists > /opt/KUTR00401/KUTR00401.txt
+    ## metrics-server
+    kubectl label pod bar name=cpu-loader
+    kubectl create deploy cpu-loader \
+    --image=nginx --replicas=3 \
+    --dry-run=client -o yaml > cpu-loader.yml
+    sed -i 's/app:/name:/' cpu-loader.yml
+    kubectl apply -f cpu-loader.yml
+    kubectl apply -f /content/metrics-server.yaml
+}
+
+function Daemon {
+    # 17
+    sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker1 \
+        "sudo systemctl disable kubelet; sudo systemctl stop kubelet"
+}
+
+# Main Area
+LOG_FILE=/tmp/cka-setup.log
+
+if [ "$(hostname -s)" != "k8s-master" ]; then
+    echo
+    echo -e ". Execute this script on the host \033[1;37mk8s-master\033[0;38m"
+    echo
+    exit
+fi
+
+exec 4>${LOG_FILE}
+LINE
+echo -e "
+   Please wait a moment, about \033[1;37m6\033[0;38m minutes. 
+   If you see more details, please open a new terminal, and type
+
+    \033[1;37mtail -f ${LOG_FILE}\033[0;39m
+"
+LINE
+echo
+
+#kubectl taint node k8s-master node-role.kubernetes.io/master- >&4 2>&1
+
+if [ ! -e /content ]; then
+    export SPATH=$(dirname $0)
+    sudo mkdir /content
+    sudo cp -r ${SPATH}/* /content
+    sudo chmod +r /content/*
+    for i in setup grade; do
+        sudo cp /content/cka-$i /usr/local/bin
+        sudo chmod +rx /usr/local/bin/cka-$i
+    done
+fi
+
+if [ "$#" = "0" ]; then
+    separator T1.Rbac
+    pad 'Task 1. ' "Preparing env for rbac"
+        Rbac >&4 2>&1
+    separator T4.Snapshot
+    pad 'Task 4. ' "Preparing env for snapshot"
+        Snapshot >&4 2>&1
+    separator T5.Network-Policy
+    pad 'Task 5. ' "Preparing env for network policy"
+        Network-Policy >&4 2>&1
+    separator T6.Service
+    pad 'Task 6. ' "Preparing env for service"
+        Service >&4 2>&1
+    separator T7.Ingress-Nginx
+    pad 'Task 7. ' "Preparing env for ingress-nginx"
+        Ingress-Nginx >&4 2>&1
+    separator T8.Replicas
+    pad 'Task 8. ' "Preparing env for replicas"
+        Replicas >&4 2>&1
+    separator T9.Schedule
+    pad 'Task 9. ' "Preparing env for schedule"
+        Schedule >&4 2>&1
+    separator T10.NoSchedule
+    pad 'Task 10.' "Preparing env for NoSchedule"
+        NoSchedule >&4 2>&1
+    separator T12.PV
+    pad 'Task 12.' "Preparing env for PV"
+        PV >&4 2>&1
+    separator T13.Dynamic-Volume
+    pad 'Task 13.' "Preparing env for Dynamic Volume"
+        Dynamic-Volume >&4 2>&1
+    separator T14.Logs
+    pad 'Task 14.' "Preparing env for logs"
+        Logs >&4 2>&1
+    separator T15.Sidecar
+    pad 'Task 15.' "Preparing env for Sidecar"
+        Sidecar >&4 2>&1
+    separator T16.Metric
+    pad 'Task 16.' "Preparing env for Metric"
+        Metric >&4 2>&1
+#   separator T17.Daemon
+#   pad 'Task 17.' "Preparing env for Daemon"
+#       Daemon >&4 2>&1
+else
+    case $1 in
+    1)
+        separator T1.Rbac
+        pad 'Task 1. ' "Preparing rbac"
+            Rbac >&4 2>&1 ;;
+    4)
+        separator T4.Snapshot
+        pad 'Task 4. ' "Preparing snapshot"
+            Snapshot >&4 2>&1 ;;
+    5)
+        separator T5.Network-Policy
+        pad 'Task 5. ' "Preparing network policy"
+            Network-Policy >&4 2>&1 ;;
+    6)
+        separator T6.Service
+        pad 'Task 6. ' "Preparing service"
+            Service >&4 2>&1 ;;
+    7)
+        separator T7.Ingress-Nginx
+        pad 'Task 7. ' "Preparing ingress-nginx"
+            Ingress-Nginx >&4 2>&1 ;;
+    8)
+        separator T8.Replicas
+        pad 'Task 8. ' "Preparing replicas"
+            Replicas >&4 2>&1 ;;
+    9)
+        separator T9.Schedule
+        pad 'Task 9. ' "Preparing schedule"
+            Schedule >&4 2>&1 ;;
+    10)
+        separator T10.NoSchedule
+        pad 'Task 10.' "Preparing NoSchedule"
+            NoSchedule >&4 2>&1 ;;
+    12)
+        separator T12.PV
+        pad 'Task 12.' "Preparing PV"
+            PV >&4 2>&1 ;;
+    13)
+        separator T13.Dynamic-Volume
+        pad 'Task 13.' "Preparing Dynamic Volume"
+            Dynamic-Volume >&4 2>&1 ;;
+    14)
+        separator T14.Logs
+        pad 'Task 14.' "Preparing logs"
+            Logs >&4 2>&1 ;;
+    15)
+        separator T15.Sidecar
+        pad 'Task 15.' "Preparing Sidecar"
+            Sidecar >&4 2>&1 ;;
+    16)
+        separator T16.Metric
+        pad 'Task 16.' "Preparing Metric"
+            Metric >&4 2>&1 ;;
+    17)
+        separator T17.Daemon
+        pad 'Task 17.' "Preparing Daemon"
+            Daemon >&4 2>&1 ;;
+    *)
+        exit ;;
+    esac
+fi
+echo
