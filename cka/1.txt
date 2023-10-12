@@ -1,32 +1,10 @@
 #!/bin/bash
 
-#ssh 免密
-
-# 生成 keypair
-ssh-keygen -f ~/.ssh/id_rsa -N ''
-
-# 拷贝公钥
-ROOT_PASS=vagrant
-
-NODES=$(egrep -v '^[a-f]|^:|^#|^$|^127' /etc/hosts | awk '{print $2}')
-
-echo -e "NODES: \e[1;34m$(echo $NODES)\e[0;0m"
-
-for i in $NODES; do
-   for j in vagrant root; do
-       sshpass -p$ROOT_PASS \
-           ssh-copy-id -o StrictHostKeyChecking=no \
-               $j@$i
-   done
-done
-
-
-
-
-
 # define var
 ## USER PASSWORD
 USER_PASSWORD=vagrant
+NODE1=k8s-worker1
+NODE2=k8s-worker2
 
 function pad {
   echo -e " $(date +%H:%M)\t\033[1;32mINFO:\033[0;39m\t[\033[1;36m${1}\033[0;39m] - \033[1;32m${2}\033[0;39m"
@@ -38,7 +16,24 @@ function LINE {
   printf "\n"
 }
 function separator {
-    echo ====== $(date "+%b %d %T") $(hostname) $1 ====== >&4 2>&1
+    STITLE=$(date "+%b %d %T")"  $(hostname) $1"
+    STITLE_SIZE=$(echo $STITLE | wc -c)
+    SSIZE=$(expr \( $STTY_COLUMNS - $STITLE_SIZE - 2 \) / 2)
+    HALF_LINE=$(yes = 2>/dev/null | sed $SSIZE'q' | tr -d '\n')
+    echo $HALF_LINE $STITLE $HALF_LINE >&4 2>&1
+    printf "\n" >&4 2>&1
+}
+
+function rename_context {
+    OLD_CONTEXT=$(kubectl config current-context)
+    NEW_CONTEXT=ck8s
+    # root
+    sudo sed -i \
+        -e "/^- context:/{N;N;N; s?name:.*?name: $NEW_CONTEXT?}" \
+        -e "/current-context/s/:.*/: $NEW_CONTEXT/" /etc/kubernetes/admin.conf
+	# USER
+    kubectl config rename-context $OLD_CONTEXT $NEW_CONTEXT
+    kubectl config use-context $NEW_CONTEXT
 }
 
 function Rbac {
@@ -77,20 +72,18 @@ function Ingress-Nginx {
     ## 参考 https://kubernetes.io/zh/docs/concepts/services-networking/ingress-controllers/
     ##    Kubernetes 作为一个项目，目前支持和维护 AWS， GCE 和 <a href="https://git.k8s.io/ingress-nginx/README.md#readme">nginx</a> Ingress 控制器。
     export URL1=registry.cn-hangzhou.aliyuncs.com/ckalab
-    #export URL1=registry.cn-hangzhou.aliyuncs.com/k-ingress-nginx
     export URL2=registry.k8s.io/ingress-nginx
     export IMGV=v1.3.0
     for i in controller kube-webhook-certgen; do
-        sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker2 "
+        sshpass -p ${USER_PASSWORD} ssh $USER@$NODE2 "
             sudo ctr -n k8s.io image pull $URL1/$i:$IMGV
             sudo ctr -n k8s.io image tag $URL1/$i:$IMGV $URL2/$i:$IMGV"   
     done
     ## env
     kubectl create ns ing-internal
     kubectl -n ing-internal run hi \
-    #--image=registry.cn-hangzhou.aliyuncs.com/k-cka/ping \
     --image=registry.cn-hangzhou.aliyuncs.com/ckalab/ping \
-    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}'
+    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "'$NODE2'"}}}'
     kubectl -n ing-internal expose pod hi --port=5678
 }
 
@@ -101,7 +94,7 @@ function Replicas {
 
 function Schedule {
     # 9
-    kubectl label node k8s-worker2 disk=spinning
+    kubectl label node $NODE2 disk=spinning
 }
 
 function NoSchedule {
@@ -128,7 +121,7 @@ function Dynamic-Volume {
 
     ## nfs-common
     for i in $(grep -v master /etc/hosts | awk '/k8s/ {print $1}'); do
-        sshpass -p ${USER_PASSWORD} ssh vagrant@${i} "
+        sshpass -p ${USER_PASSWORD} ssh $USER@${i} "
             if sudo apt list nfs-common | grep -wq installed; then
                 echo nfs-common is already the newest version
             else
@@ -143,13 +136,10 @@ function Dynamic-Volume {
     export URL2=k8s.gcr.io/sig-storage
     export IMGN=nfs-subdir-external-provisioner
     export IMGV=v4.0.2
-    sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker2 "
+    sshpass -p ${USER_PASSWORD} ssh $USER@$NODE2 "
         sudo ctr -n k8s.io image pull $URL1/$IMGN:$IMGV
         sudo ctr -n k8s.io image tag $URL1/$IMGN:$IMGV $URL2/$IMGN:$IMGV"
     ### https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner
-    sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker1 "
-        sudo ctr -n k8s.io image pull $URL1/$IMGN:$IMGV
-        sudo ctr -n k8s.io image tag $URL1/$IMGN:$IMGV $URL2/$IMGN:$IMGV"
     for i in rbac deployment class; do
         cp /content/$i.yaml /tmp
         if [ "$i" = "deployment" ]; then
@@ -158,7 +148,7 @@ function Dynamic-Volume {
                 -e "/server/s?:.*?: $(grep $(hostname -s) /etc/hosts | cut -d \  -f1)?" \
                 -e '/path/s?:.*?: /data?' \
                 -e '/containers/i\      nodeSelector:' \
-                -e '/containers/i\        kubernetes.io/hostname: k8s-worker2' /tmp/deployment.yaml
+                -e "/containers/i\        kubernetes.io/hostname: $NODE2" /tmp/deployment.yaml
         fi
         if [ "$i" = "class" ]; then
             sed -i '/name:/s?:.*?: csi-hostpath-sc?' /tmp/class.yaml
@@ -174,7 +164,7 @@ function Logs {
     sudo chmod a+w ${F14}
     kubectl run bar \
     --image=registry.cn-hangzhou.aliyuncs.com/ckalab/bar \
-    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}'
+    --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "'$NODE2'"}}}'
 }
 
 function Sidecar {
@@ -190,6 +180,7 @@ function Metric {
     sudo chmod a+w ${F16}
     echo exists > /opt/KUTR00401/KUTR00401.txt
     ## metrics-server
+    ## https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
     kubectl label pod bar name=cpu-loader
     kubectl create deploy cpu-loader \
     --image=nginx --replicas=3 \
@@ -201,7 +192,7 @@ function Metric {
 
 function Daemon {
     # 17
-    sshpass -p ${USER_PASSWORD} ssh vagrant@k8s-worker1 \
+    sshpass -p ${USER_PASSWORD} ssh $USER@$NODE1 \
         "sudo systemctl disable kubelet; sudo systemctl stop kubelet"
 }
 
@@ -238,7 +229,8 @@ if [ ! -e /content ]; then
         sudo chmod +rx /usr/local/bin/cka-$i
     done
 fi
-
+separator rename_context
+    rename_context >&4 2>&1
 if [ "$#" = "0" ]; then
     separator T1.Rbac
     pad 'Task 1. ' "Preparing env for rbac"

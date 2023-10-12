@@ -72,7 +72,8 @@ sudo apt -y install \
    open-vm-tools
 
 #设置root密码
-ROOT_PASS=ubuntu
+
+ROOT_PASS=vagrant
 
 (echo $ROOT_PASS; echo $ROOT_PASS) \
    | sudo passwd root
@@ -81,6 +82,9 @@ echo PermitRootLogin yes \
    | sudo tee -a /etc/ssh/sshd_config
 
 sudo systemctl restart sshd
+
+
+
 
 ## 1. Bridge
 
