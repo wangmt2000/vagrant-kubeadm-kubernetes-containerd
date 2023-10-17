@@ -1,0 +1,1066 @@
+<!DOCTYPE html><html><head>
+      <title>CKA&#x53EA;&#x6709;&#x9898;</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\wangmt\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.6.8\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p,html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  300px/2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <div class="md-toc">
+<details style="padding:0;;padding-left:0px;" open>
+        <summary class="md-toc-link-wrapper">
+          <a href="#2-&#x8003;&#x8BD5;&#x8BF4;&#x660E;" class="md-toc-link"><ol start="2">
+<li>&#x8003;&#x8BD5;&#x8BF4;&#x660E;</li>
+</ol>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#21-&#x8003;&#x8BD5;&#x73AF;&#x5883;" class="md-toc-link">
+            <p>2.1 &#x8003;&#x8BD5;&#x73AF;&#x5883;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2a-&#x8003;&#x8BD5;&#x5C0F;&#x63D0;&#x793A;" class="md-toc-link">
+            <p>2.A &#x8003;&#x8BD5;&#x5C0F;&#x63D0;&#x793A;</p>
+
+          </a></div>
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:0px;" open>
+        <summary class="md-toc-link-wrapper">
+          <a href="#3-&#x7EC3;&#x4E60;&#x9898;" class="md-toc-link"><ol start="3">
+<li>&#x7EC3;&#x4E60;&#x9898;</li>
+</ol>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-1-rbac---role-based-access-control425" class="md-toc-link">
+            <p>Task 1. RBAC - role based access control&#xFF08;4/25%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-2-drain---highly-available425" class="md-toc-link">
+            <p>Task 2. drain - highly-available&#xFF08;4/25%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-3-upgrade---kubeadm725" class="md-toc-link">
+            <p>Task 3. upgrade - Kubeadm&#xFF08;7/25%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-4-snapshot---implement-etcd725" class="md-toc-link">
+            <p>Task 4. snapshot - Implement etcd&#xFF08;7/25%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-6-expose---service-types720" class="md-toc-link">
+            <p>Task 6. expose - service types&#xFF08;7/20%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-7-ingress-nginx---ingress-controllers720" class="md-toc-link">
+            <p>Task 7. ingress nginx - Ingress controllers&#xFF08;7/20%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-8-scale---scale-applications415" class="md-toc-link">
+            <p>Task 8. scale - scale applications&#xFF08;4/15%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-9-schedule---pod-scheduling415" class="md-toc-link">
+            <p>Task 9. schedule - Pod scheduling&#xFF08;4/15%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-10-describe---pod-scheduling415" class="md-toc-link">
+            <p>Task 10. describe - Pod scheduling&#xFF08;4/15%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-11-multi-containers415" class="md-toc-link">
+            <p>Task 11. multi Containers&#xFF08;4/15%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-12-pv---persistent-volumes410" class="md-toc-link">
+            <p>Task 12. pv - persistent volumes&#xFF08;4/10%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-13-pvc---persistent-volume-claims710" class="md-toc-link">
+            <p>Task 13. pvc - persistent volume claims&#xFF08;7/10%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-14-logs---node-logging530" class="md-toc-link">
+            <p>Task 14. logs - node logging&#xFF08;5/30%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-15-sidecar---manage-container-stdout730" class="md-toc-link">
+            <p>Task 15. sidecar - Manage container stdout&#xFF08;7/30%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-16-top---monitor-applications530" class="md-toc-link">
+            <p>Task 16. top - monitor applications&#xFF08;5/30%&#xFF09;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#task-17-daemon---cluster-component1330" class="md-toc-link">
+            <p>Task 17. Daemon - cluster component&#xFF08;13/30%&#xFF09;</p>
+
+          </a></div>
+        </div>
+      </details>
+    <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#a1-&#x51C6;&#x5907;&#x7EC3;&#x4E60;&#x73AF;&#x5883;" class="md-toc-link">
+            <p>A1. &#x51C6;&#x5907;&#x7EC3;&#x4E60;&#x73AF;&#x5883;</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#a2-exam-grade" class="md-toc-link">
+            <p>A2. exam-grade</p>
+
+          </a></div>
+</div>
+<h1 class="mume-header" id="2-%E8%80%83%E8%AF%95%E8%AF%B4%E6%98%8E">2. &#x8003;&#x8BD5;&#x8BF4;&#x660E;</h1>
+
+<p><strong>echo set number et ts=2 cuc &gt; ~/.vimrc</strong></p>
+<h2 class="mume-header" id="21-%E8%80%83%E8%AF%95%E7%8E%AF%E5%A2%83">2.1 &#x8003;&#x8BD5;&#x73AF;&#x5883;</h2>
+
+<ul>
+<li>&#x6B64;&#x8003;&#x8BD5;&#x4E2D;&#x7684;&#x6BCF;&#x9879;&#x4EFB;&#x52A1;&#x90FD;&#x5FC5;&#x987B;&#x5728;&#x6307;&#x5B9A;&#x7684;&#x96C6;&#x7FA4;/&#x914D;&#x7F6E;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#x5B8C;&#x6210;&#x3002;</li>
+<li>&#x4E3A;&#x4E86;&#x6700;&#x5C0F;&#x5316;&#x5207;&#x6362;&#xFF0C;&#x4EFB;&#x52A1;&#x88AB;&#x5206;&#x7EC4;&#x4EE5;&#x4FBF;&#x7ED9;&#x5B9A;&#x96C6;&#x7FA4;&#x4E0A;&#x7684;&#x6240;&#x6709;&#x95EE;&#x9898;&#x8FDE;&#x7EED;&#x51FA;&#x73B0;&#x3002;&#xFF08;<mark>&#x5B9E;&#x9645;&#x5E76;&#x6CA1;&#x6709;&#x8FDE;&#x7EED;&#x663E;&#x793A;</mark>&#xFF09;</li>
+<li>&#x8003;&#x8BD5;&#x73AF;&#x5883;&#x7531;&#x4E03;&#x4E2A;&#x96C6;&#x7FA4;&#x7EC4;&#x6210;&#xFF0C;&#x7531;&#x4E0D;&#x540C;&#x6570;&#x91CF;&#x7684;&#x5BB9;&#x5668;&#x7EC4;&#x6210;&#xFF0C;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;</li>
+</ul>
+<p><strong>CKA Clusters</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Cluster</th>
+<th style="text-align:center">Members</th>
+<th style="text-align:center">&#x7EC3;&#x4E60;&#x73AF;&#x5883; &#x8282;&#x70B9;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-</td>
+<td style="text-align:center">console</td>
+<td style="text-align:center">&#x7269;&#x7406;&#x673A;</td>
+</tr>
+<tr>
+<td style="text-align:center">k8s</td>
+<td style="text-align:center">1 master<br>2 worker</td>
+<td style="text-align:center">k8s-master<br>k8-worker1, k8s-worker2</td>
+</tr>
+<tr>
+<td style="text-align:center">ek8s</td>
+<td style="text-align:center">1 master<br>2 worker</td>
+<td style="text-align:center">ek8s-master<br>ek8-worker1, ek8s-worker2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>&#x5728;&#x6BCF;&#x4E2A;&#x4EFB;&#x52A1;&#x5F00;&#x59CB;&#x65F6;&#xFF0C;&#x60A8;&#x5C06;&#x6536;&#x5230;&#x547D;&#x4EE4;&#x4EE5;&#x786E;&#x4FDD;&#x60A8;&#x5728;&#x6B63;&#x786E;&#x7684;&#x96C6;&#x7FA4;&#x4E0A;&#x5B8C;&#x6210;&#x4EFB;&#x52A1;&#x3002;</li>
+<li>&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#x901A;&#x8FC7; ssh &#x8BBF;&#x95EE;&#x7EC4;&#x6210;&#x6BCF;&#x4E2A;&#x96C6;&#x7FA4;&#x7684;&#x8282;&#x70B9;&#xFF1A;<mark>ssh &lt;nodename&gt;</mark>&#x3002;</li>
+<li>&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x53D1;&#x51FA;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5728;&#x4EFB;&#x4F55;&#x8282;&#x70B9;&#x4E0A;&#x83B7;&#x5F97;&#x63D0;&#x5347;&#x7684;&#x6743;&#x9650;&#xFF1A;<mark>sudo -i</mark>&#x3002;</li>
+<li>&#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x968F;&#x65F6;&#x4F7F;&#x7528; sudo &#x4EE5;&#x63D0;&#x5347;&#x7684;&#x6743;&#x9650;&#x6267;&#x884C;&#x547D;&#x4EE4;&#x3002;</li>
+<li>&#x5B8C;&#x6210;&#x6BCF;&#x9879;&#x4EFB;&#x52A1;&#x540E;&#xFF0C;&#x60A8;&#x5FC5;&#x987B;&#x8FD4;&#x56DE;&#x57FA;&#x672C;&#x8282;&#x70B9;&#xFF08;&#x4E3B;&#x673A;&#x540D; node-1&#xFF09;&#x3002;</li>
+<li>&#x4E0D;&#x652F;&#x6301;&#x5D4C;&#x5957;&#x7684; ssh&#x3002;</li>
+<li>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; kubectl &#x548C;&#x9002;&#x5F53;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4ECE;&#x57FA;&#x672C;&#x8282;&#x70B9;&#x5904;&#x7406;&#x4EFB;&#x4F55;&#x96C6;&#x7FA4;&#x3002;&#x5F53;&#x901A;&#x8FC7; ssh &#x8FDE;&#x63A5;&#x5230;&#x96C6;&#x7FA4;&#x6210;&#x5458;&#x65F6;&#xFF0C;&#x60A8;&#x5C06;&#x53EA;&#x80FD;&#x901A;&#x8FC7; kubectl &#x5728;&#x8BE5;&#x7279;&#x5B9A;&#x96C6;&#x7FA4;&#x4E0A;&#x5DE5;&#x4F5C;&#x3002;</li>
+<li>&#x4E3A;&#x65B9;&#x4FBF;&#x8D77;&#x89C1;&#xFF0C;&#x6240;&#x6709;&#x73AF;&#x5883;&#xFF0C;&#x5373;&#x57FA;&#x672C;&#x7CFB;&#x7EDF;&#x548C;&#x96C6;&#x7FA4;&#x8282;&#x70B9;&#xFF0C;&#x90FD;&#x9884;&#x5B89;&#x88C5;&#x548C;&#x9884;&#x914D;&#x7F6E;&#x4E86;&#x4EE5;&#x4E0B;&#x9644;&#x52A0;&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;&#xFF1A;
+<ul>
+<li><code>kubectl</code>&#x5E26;&#x6709;&#x522B;&#x540D;<code>k</code>&#x548C; Bash &#x81EA;&#x52A8;&#x5B8C;&#x6210;&#x529F;&#x80FD;</li>
+<li><code>jq</code>&#x7528;&#x4E8E; YAML/JSON &#x5904;&#x7406;</li>
+<li><code>tmux</code> &#x7528;&#x4E8E;&#x7EC8;&#x7AEF;&#x590D;&#x7528;</li>
+<li><code>curl</code>&#x5E76;&#x7528;&#x4E8E;&#x6D4B;&#x8BD5; Web &#x670D;&#x52A1;<code>wget</code></li>
+<li><code>man</code> &#x548C;&#x624B;&#x518C;&#x9875;&#x4EE5;&#x83B7;&#x53D6;&#x66F4;&#x591A;&#x6587;&#x6863;</li>
+</ul>
+</li>
+<li>&#x5C06;&#x5728;&#x9002;&#x5F53;&#x7684;&#x4EFB;&#x52A1;&#x4E2D;&#x63D0;&#x4F9B;&#x6709;&#x5173;&#x8FDE;&#x63A5;&#x5230;&#x96C6;&#x7FA4;&#x8282;&#x70B9;&#x7684;&#x8FDB;&#x4E00;&#x6B65;&#x8BF4;&#x660E;&#x3002;</li>
+<li><mark>&#x5982;&#x679C;&#x672A;&#x6307;&#x5B9A;&#x663E;&#x5F0F;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#xFF0C;&#x5219;&#x5E94;&#x4F7F;&#x7528;&#x9ED8;&#x8BA4;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x3002;</mark></li>
+<li>&#x5982;&#x679C;&#x60A8;&#x9700;&#x8981;&#x9500;&#x6BC1;/&#x91CD;&#x65B0;&#x521B;&#x5EFA;&#x8D44;&#x6E90;&#x4EE5;&#x6267;&#x884C;&#x7279;&#x5B9A;&#x4EFB;&#x52A1;&#xFF0C;&#x60A8;&#x6709;&#x8D23;&#x4EFB;&#x5728;&#x9500;&#x6BC1;&#x8D44;&#x6E90;&#x4E4B;&#x524D;&#x9002;&#x5F53;&#x5730;&#x5907;&#x4EFD;&#x8D44;&#x6E90;&#x5B9A;&#x4E49;&#x3002;</li>
+<li>CKA &#x548C; CKAD &#x73AF;&#x5883;&#x5F53;&#x524D;&#x8FD0;&#x884C; Kubernetes v1.23.2&#x3002; <em>&#x5728; K8s &#x53D1;&#x5E03;&#x65E5;&#x671F;&#x7684;&#x5927;&#x7EA6; 4 &#x5230; 8 &#x5468;&#x5185;&#xFF0C;CKA&#x3001;CKS &#x548C; CKAD &#x8003;&#x8BD5;&#x73AF;&#x5883;&#x5C06;&#x4E0E;&#x6700;&#x65B0;&#x7684; K8s &#x6B21;&#x8981;&#x7248;&#x672C;&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#x3002;</em></li>
+</ul>
+<h2 class="mume-header" id="2a-%E8%80%83%E8%AF%95%E5%B0%8F%E6%8F%90%E7%A4%BA">2.A &#x8003;&#x8BD5;&#x5C0F;&#x63D0;&#x793A;</h2>
+
+<ul>
+<li>
+<p>&#x914D;&#x7F6E;&#x8865;&#x5168;</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ <span class="token builtin class-name">echo</span> <span class="token string">&apos;source &lt;(kubectl completion bash)&apos;</span> <span class="token operator">&gt;&gt;</span> ~/.bashrc
+</pre></li>
+<li>
+<p>&#x6CE8;&#x610F;&#x5728;&#x54EA;&#x4E2A;<code>&#x96C6;&#x7FA4;</code>&#x64CD;&#x4F5C;&#x7684;</p>
+</li>
+<li>
+<p>&#x6CE8;&#x610F;&#x5728;&#x54EA;&#x4E2A;<code>&#x8282;&#x70B9;</code>&#x64CD;&#x4F5C;&#x7684;</p>
+</li>
+<li>
+<p>&#x6CE8;&#x610F;&#x5728;&#x54EA;&#x4E2A;<code>ns</code>&#x64CD;&#x4F5C;&#x7684;</p>
+</li>
+</ul>
+<h1 class="mume-header" id="3-%E7%BB%83%E4%B9%A0%E9%A2%98">3. &#x7EC3;&#x4E60;&#x9898;</h1>
+
+<h2 class="mume-header" id="task-1-rbac---role-based-access-control425">Task 1. RBAC - role based access control&#xFF08;4/25%&#xFF09;</h2>
+
+<p>Task weight: 4%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Context:</strong></p>
+<p>You have been asked to create a new <code>ClusterRole</code> for a deployment pipeline and bind it to a specific <code>ServiceAccount</code> scoped to a specific namespace.</p>
+<p><strong>Task:</strong></p>
+<ul>
+<li>
+<p>[ ] Create a new ClusterRole named<code>deployment-clusterrole</code>, which only allows to create the following resource types:</p>
+<ul>
+<li><code>Deployment</code></li>
+<li><code>StatefulSet</code></li>
+<li><code>DaemonSet</code></li>
+</ul>
+</li>
+<li>
+<p>[ ] Create a new <code>ServiceAccount</code> named <code>cicd-token</code> in the existing namespace <code>app-team1</code></p>
+</li>
+<li>
+<p>[ ] bind the new ClusterRole <code>deployment-clusterrole</code> to the new Service Account <code>cicd-token</code>, limited to the namespace <code>app-team1</code></p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x5185;&#x5BB9;&#xFF1A;</strong></p>
+<p>&#x4E3A;&#x90E8;&#x7F72;&#x7BA1;&#x9053;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684; <code>ClusterRole</code> &#x5E76;&#x5C06;&#x5176;&#x7ED1;&#x5B9A;&#x5230;&#x8303;&#x56F4;&#x4E3A;&#x7279;&#x5B9A; namespace &#x7684;&#x7279;&#x5B9A; <code>ServiceAccount</code></p>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x5B57;&#x4E3A; <code>deployment-clusterrole</code> &#x4E14;&#x4EC5;&#x5141;&#x8BB8;&#x521B;&#x5EFA;&#x4EE5;&#x4E0B;&#x8D44;&#x6E90;&#x7C7B;&#x578B;&#x7684;&#x65B0; <code>ClusterRole</code>&#xFF1A;
+<ul>
+<li><code>Deployment</code></li>
+<li><code>StatefulSet</code></li>
+<li><code>DaemonSet</code></li>
+</ul>
+</li>
+<li>[ ] &#x5728;&#x73B0;&#x6709;&#x7684; namespace <code>app-team1</code> &#x4E2D;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x4E3A; <code>cicd-token</code> &#x7684;&#x65B0; <code>ServiceAccount</code>&#x3002;</li>
+<li>[ ] &#x9650;&#x4E8E; namespace <code>app-team1</code> &#xFF0C;&#x5C06;&#x65B0;&#x7684; ClusterRole <code>deployment-clusterrole</code> &#x7ED1;&#x5B9A;&#x5230;&#x65B0;&#x7684; ServiceAccount <code>cicd-token</code>&#x3002;</li>
+</ul>
+</blockquote>
+<h2 class="mume-header" id="task-2-drain---highly-available425">Task 2. drain - highly-available&#xFF08;4/25%&#xFF09;</h2>
+
+<p>Task weight: 4%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<p>Set the node named <code>k8s-worker1</code> as unavailable and reschedule all the pods running on it</p>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<p>&#x5C06;&#x540D;&#x4E3A; <code>k8s-worker1</code> &#x7684; node &#x8BBE;&#x7F6E;&#x4E3A;&#x4E0D;&#x53EF;&#x7528;&#xFF0C; &#x5E76;&#x91CD;&#x65B0;&#x8C03;&#x5EA6;&#x8BE5; node &#x4E0A;&#x6240;&#x6709;&#x8FD0;&#x884C;&#x7684; pods</p>
+</blockquote>
+<h2 class="mume-header" id="task-3-upgrade---kubeadm725">Task 3. upgrade - Kubeadm&#xFF08;7/25%&#xFF09;</h2>
+
+<p>Task weight: 7%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>
+<p>[ ] Given an existing Kubernetes cluster running version <code>1.28.2</code>, upgrade all of the Kubernetes control plane and node components on the <strong>master node only</strong> to version <code>1.28.2</code></p>
+</li>
+<li>
+<p>[ ] You are also expected to upgrade <code>kubelet</code> and <code>kubectl</code> on the master node</p>
+</li>
+</ul>
+</blockquote>
+<div style="background: #ffedcc; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+Be sure to drain the master node before upgrading it and uncordon it after the upgrade. do not upgrade the worker nodes,etcd,the container manager,the CNI plugin,the DNS service or any other addons
+</div> 
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>
+<p>[ ] &#x73B0;&#x6709;&#x7684; kubernetes &#x96C6;&#x7FA4;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#x7684;&#x7248;&#x672C;&#x662F; <code>1.28.2</code>&#x3002; <strong>&#x4EC5;&#x5C06;&#x4E3B;&#x8282;&#x70B9;&#x4E0A;</strong>&#x7684;&#x6240;&#x6709; kubernetes &#x63A7;&#x5236;&#x5E73;&#x9762;&#x548C;&#x8282;&#x70B9;&#x7EC4;&#x4EF6;&#x5347;&#x7EA7;&#x5230;&#x7248;&#x672C; <code>1.28.2</code>&#x3002;</p>
+</li>
+<li>
+<p>[ ] &#x53E6;&#x5916;&#xFF0C; &#x5728;&#x4E3B;&#x8282;&#x70B9;&#x4E0A;&#x5347;&#x7EA7; <code>kubelet</code> &#x548C; <code>kubectl</code></p>
+</li>
+</ul>
+</blockquote>
+<div style="background: #ffedcc; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+&#x786E;&#x4FDD;&#x5728;&#x5347;&#x7EA7;&#x524D; drain &#x4E3B;&#x8282;&#x70B9;&#xFF0C; &#x5E76;&#x5728;&#x5347;&#x7EA7;&#x540E; uncordon &#x4E3B;&#x8282;&#x70B9;&#x3002;&#x8BF7;&#x4E0D;&#x8981;&#x5347;&#x7EA7;&#x5DE5;&#x4F5C;&#x8282;&#x70B9;&#xFF0C;etcd&#xFF0C;container &#x7BA1;&#x7406;&#x5668;&#xFF0C;CNI &#x63D2;&#x4EF6;&#xFF0C;DNS &#x670D;&#x52A1;&#x6216;&#x4EFB;&#x4F55;&#x5176;&#x4ED6;&#x63D2;&#x4EF6;
+</div> 
+<h2 class="mume-header" id="task-4-snapshot---implement-etcd725">Task 4. snapshot - Implement etcd&#xFF08;7/25%&#xFF09;</h2>
+
+<p>Task weight: 7%</p>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">No configuration context change required for this item.
+</div>
+<blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] First, create a snapshot of the existing etcd instance running at <a href="https://127.0.0.1:2379">https://127.0.0.1:2379</a>, SAVING THE SNAPSHOT TO <code>/srv/backup/etcd-snapshot.db</code></li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">Creating a snapshot of the given instance is expected to complete in seconds. if the operation seems to hang,something&apos;s likely wrong with your command.Use CTRL + C to cancel the operation and try again
+</div>
+<blockquote>
+<ul>
+<li>[ ] Next, restore an existing,previous snapshot located at <code>/srv/data/etcd-snapshot-previous.db</code></li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">The following TLS certificates/key are supplied for connecting to the server with <a href>etcdctl</a>:
+  <li> CA certificate: <a href>/opt/KUIN00601/ca.crt</a>
+  </li><li> Client certificate: <a href>/opt/KUIN00601/etcd-client.crt</a>
+  </li><li> Client key: <a href>/opt/KUIN00601/etcd-client.key</a>
+</li></div>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">&#x6B64;&#x9879;&#x76EE;&#x65E0;&#x9700;&#x66F4;&#x6539;&#x914D;&#x7F6E;&#x73AF;&#x5883;&#x3002;
+</div>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x9996;&#x5148;&#xFF0C;&#x4E3A;&#x8FD0;&#x884C;&#x5728; https://127.0.0.1:2379&#x4E0A;&#x7684;&#x73B0;&#x6709;<code>etcd</code>&#x5B9E;&#x4F8B;&#x521B;&#x5EFA;&#x5FEB;&#x7167;&#xFF0C;&#x5E76;&#x5C06;&#x5FEB;&#x7167;&#x4FDD;&#x5B58;&#x5230;<code>/srv/backup/etcd-snapshot.db</code>&#x3002;</li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">&#x4E3A;&#x7ED9;&#x5B9A;&#x5B9E;&#x4F8B;&#x521B;&#x5EFA;&#x5FEB;&#x7167;&#x9884;&#x8BA1;&#x80FD;&#x5728;&#x51E0;&#x79D2;&#x949F;&#x5185;&#x5B8C;&#x6210;&#x3002; &#x5982;&#x679C;&#x8BE5;&#x64CD;&#x4F5C;&#x4F3C;&#x4E4E;&#x6302;&#x8D77;&#xFF0C; &#x5219;&#x547D;&#x4EE4;&#x53EF;&#x80FD;&#x6709;&#x95EE;&#x9898;&#x3002; &#x7528; <kbd>CTRL</kbd>+<kbd>c</kbd> &#x6765;&#x53D6;&#x6D88;&#x64CD;&#x4F5C;&#xFF0C; &#x7136;&#x540E;&#x91CD;&#x8BD5;&#x3002;
+</div>
+<blockquote>
+<ul>
+<li>[ ] &#x7136;&#x540E;&#xFF0C;&#x8FD8;&#x539F;&#x4F4D;&#x4E8E;<code>/srv/data/etcd-snapshot-previous.db</code>&#x7684;&#x73B0;&#x6709;&#x5148;&#x524D;&#x5FEB;&#x7167;&#x3002;</li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">&#x63D0;&#x4F9B;&#x4E86;&#x4EE5;&#x4E0B;TLS&#x8BC1;&#x4E66;&#x548C;&#x5BC6;&#x94A5;&#xFF0C;&#x4EE5;&#x901A;&#x8FC7; <a href>etcdctl</a> &#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5668;&#x3002;
+<li> CA &#x8BC1;&#x4E66;&#xFF1A;<a href>/opt/KUIN00601/ca.crt</a>
+</li><li> &#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;&#xFF1A;<a href>/opt/KUIN00601/etcd-client.crt</a> 
+</li><li> &#x5BA2;&#x6237;&#x7AEF;&#x5BC6;&#x94A5;&#xFF1A;<a href>/opt/KUIN00601/etcd-client.key</a>
+</li></div>
+<div style="background: #dbfaf4; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+<dt style="background: #1abc9c; padding: 6px 12px; font-weight: bold; display: block; color: #fff; margin: -12px; margin-bottom: -12px; margin-bottom: 12px;">Hint - &#x63D0;&#x793A;</dt>
+&#x53C2;&#x8003;&#x7F51;&#x5740;: <a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#built-in-snapshot">https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#built-in-snapshot</a>
+</div>
+<pre data-role="codeBlock" data-info class="language-"><code>
+
+## Task 5. network policy - network interface&#xFF08;7/20%&#xFF09;
+
+Task weight: 7%
+ Set configuration context:
+
+&#x200B;```bash
+$ kubectl config use-context ck8s
+</code></pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>
+<p>[ ] Create a new <code>NetworkPolicy</code> named <code>allow-port-from-namespace</code> that allows Pods in the existing namespace <code>internal</code> to connect to port <code>8080</code> of other pods in the same namespace</p>
+</li>
+<li>
+<p>[ ] Ensure that the new <code>NetworkPolicy</code>:</p>
+<ul>
+<li><strong>does not allow</strong> access to pods not listening on port <code>8080</code></li>
+<li><strong>does not allow</strong> access from pods not in namespace <code>internal</code></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>
+<p>[ ] &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x4E3A;<code>allow-port-from-namespace</code>&#x7684;&#x65B0;<code>NetworkPolicy</code>&#xFF0C; &#x4EE5;&#x5141;&#x8BB8;&#x73B0;&#x6709; namespace <code>internal</code> &#x4E2D;&#x7684; Pods &#x8FDE;&#x63A5;&#x5230;&#x540C;&#x4E00; namespace &#x4E2D;&#x5176;&#x4ED6; Pods &#x7684;&#x7AEF;&#x53E3; <code>8080</code>&#x3002;</p>
+</li>
+<li>
+<p>[ ] &#x786E;&#x4FDD;&#x65B0;&#x7684; <code>NetworkPolicy</code>&#xFF1A;</p>
+<ul>
+<li><strong>&#x4E0D;&#x5141;&#x8BB8;</strong>&#x5BF9;&#x6CA1;&#x6709;&#x5728;&#x76D1;&#x542C;&#x7AEF;&#x53E3; <code>8080</code> &#x7684; Pods &#x7684;&#x8BBF;&#x95EE;</li>
+<li><strong>&#x4E0D;&#x5141;&#x8BB8;</strong>&#x4E0D;&#x6765;&#x81EA; namespace <code>internal</code> &#x7684; Pods &#x7684;&#x8BBF;&#x95EE;</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div style="background: #dbfaf4; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+<dt style="background: #1abc9c; padding: 6px 12px; font-weight: bold; display: block; color: #fff; margin: -12px; margin-bottom: -12px; margin-bottom: 12px;">Hint - &#x63D0;&#x793A;</dt>
+<li> &#x52A1;&#x5FC5;&#x5206;&#x6790;&#x6E05;&#x695A;&#x89C4;&#x5219;&#x662F;&#x8FDB;&#x8FD8;&#x662F;&#x51FA;
+</li><li> &#x8003;&#x8BD5;&#x65F6;&#x5019;&#xFF0C;&#x5BF9;&#x5E94;&#x7684;namespace&#x53EF;&#x80FD;&#x4E0D;&#x5B58;&#x5728;
+</li></div>
+<h2 class="mume-header" id="task-6-expose---service-types720">Task 6. expose - service types&#xFF08;7/20%&#xFF09;</h2>
+
+<p>Task weight: 7%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>
+<p>[ ] Reconfigure the existing deployment <code>front-end</code> and add a port specification named <code>http</code> exposing port <code>80/tcp</code> of the existing container <code>nginx</code>.</p>
+</li>
+<li>
+<p>[ ] Create a new service named <code>front-end-svc</code> exposing the container port <code>http</code>.</p>
+</li>
+<li>
+<p>[ ] Configure the new service to also expose the individual pods via a <code>NodePort</code> on the nodes on which they are scheduled.</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;</strong></p>
+<ul>
+<li>[ ] &#x8BF7;&#x91CD;&#x65B0;&#x914D;&#x7F6E;&#x73B0;&#x6709;&#x7684; deployment <code>front-end</code>&#xFF1A;&#x6DFB;&#x52A0;&#x540D;&#x4E3A; <code>http</code> &#x7684;&#x7AEF;&#x53E3;&#x89C4;&#x8303;&#x6765;&#x516C;&#x5F00;&#x73B0;&#x6709;&#x5BB9;&#x5668; <code>nginx</code> &#x7684;&#x7AEF;&#x53E3; <code>80/tcp</code>&#x3002;</li>
+<li>[ ] &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x4E3A; <code>front-end-svc</code> &#x7684;&#x65B0;&#x670D;&#x52A1;&#xFF0C; &#x4EE5;&#x516C;&#x5F00;&#x5BB9;&#x5668;&#x7AEF;&#x53E3; <code>http</code>&#x3002;</li>
+<li>[ ] &#x914D;&#x7F6E;&#x6B64;&#x670D;&#x52A1;&#xFF0C; &#x4EE5;&#x901A;&#x8FC7;&#x5728;&#x6392;&#x5B9A;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#x7684; <code>NodePort</code> &#x6765;&#x516C;&#x5F00;&#x5404;&#x4E2A; pods&#x3002;</li>
+</ul>
+</blockquote>
+<h2 class="mume-header" id="task-7-ingress-nginx---ingress-controllers720">Task 7. ingress nginx - Ingress controllers&#xFF08;7/20%&#xFF09;</h2>
+
+<p>Task wight: 7%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] Create a new nginx Ingress resource as follows:
+<ul>
+<li>Name: <code>ping</code></li>
+<li>Namespace: <code>ing-internal</code></li>
+<li>Exposing service <code>hi</code> on path <code>/hi</code> using service port <code>5678</code></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">The availability of service hello can be checked using the following command,which should return hi: <br></div>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ <span class="token function">curl</span> -kL <span class="token operator">&lt;</span>INTERNAL_IP<span class="token operator">&gt;</span>/hi
+</pre><blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x5982;&#x4E0B;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684; nginx ingress &#x8D44;&#x6E90;&#xFF1A;</li>
+<li>&#x540D;&#x79F0;&#xFF1A; <code>ping</code></li>
+<li>namespace&#xFF1A; <code>ing-internal</code></li>
+<li>&#x4F7F;&#x7528;&#x670D;&#x52A1;&#x7AEF;&#x53E3; <code>5678</code> &#x5728;&#x8DEF;&#x5F84;<code>/hi</code> &#x4E0A;&#x516C;&#x5F00;&#x670D;&#x52A1; <code>hi</code></li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x68C0;&#x67E5;&#x670D;&#x52A1; hello &#x7684;&#x53EF;&#x7528;&#x6027;&#xFF0C; &#x8BE5;&#x547D;&#x4EE4;&#x8FD4;&#x56DE; hi&#xFF1A;<br></div>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ <span class="token function">curl</span> -kL <span class="token operator">&lt;</span>INTERNAL_IP<span class="token operator">&gt;</span>/hi
+</pre><h2 class="mume-header" id="task-8-scale---scale-applications415">Task 8. scale - scale applications&#xFF08;4/15%&#xFF09;</h2>
+
+<p>Task weight: 4%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] scale the deployment <code>webserver</code> to <code>6</code> pods</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x5C06; deployment <code>webserver</code> &#x6269;&#x5C55;&#x81F3; <code>6</code>pods</li>
+</ul>
+</blockquote>
+<h2 class="mume-header" id="task-9-schedule---pod-scheduling415">Task 9. schedule - Pod scheduling&#xFF08;4/15%&#xFF09;</h2>
+
+<p>Task weight 4%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<h5><strong>Task:</strong></h5>
+<ul>
+<li>[ ] Schedule a pod as follows:
+<ul>
+<li>Name: <code>nginx-kusc00401</code>
+<ul>
+<li>image: <code>nginx</code></li>
+<li>Node selector: <code>disk=spinning</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;</strong></p>
+<ul>
+<li>[ ] &#x6309;&#x5982;&#x4E0B;&#x8981;&#x6C42;&#x8C03;&#x5EA6;&#x4E00;&#x4E2A; pod&#xFF1A;</li>
+<li>&#x540D;&#x79F0;&#xFF1A; <code>nginx-kusc00401</code></li>
+<li>image: <code>nginx</code></li>
+<li>Node selector: <code>disk=spinning</code></li>
+</ul>
+</blockquote>
+<div style="background: #dbfaf4; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+<dt style="background: #1abc9c; padding: 6px 12px; font-weight: bold; display: block; color: #fff; margin: -12px; margin-bottom: -12px; margin-bottom: 12px;">Hint - &#x63D0;&#x793A;</dt>
+  &#x5B98;&#x7F51;&#x624B;&#x518C;&#x4E2D;&#x641C;&#x7D22; <b>selector</b><br>
+  &#x5C06; Pod &#x6307;&#x6D3E;&#x7ED9;&#x8282;&#x70B9; | Kubernetes
+</div>
+<h2 class="mume-header" id="task-10-describe---pod-scheduling415">Task 10. describe - Pod scheduling&#xFF08;4/15%&#xFF09;</h2>
+
+<p>Task weight 4%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] Check to see how many nodes are ready(not including nodes tainted <code>NoSchedule</code>) and write the number to <code>/opt/KUSC00402/kusc00402.txt</code></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x68C0;&#x67E5;&#x6709;&#x591A;&#x5C11;&#x4E2A; nodes &#x5DF2;&#x51C6;&#x5907;&#x5C31;&#x7EEA;&#xFF08;&#x4E0D;&#x5305;&#x62EC;&#x88AB;&#x6253;&#x4E0A; tainted: <code>NoSchedule</code> &#x7684;&#x8282;&#x70B9;&#xFF09; &#xFF0C; &#x5E76;&#x5C06;&#x6570;&#x91CF;&#x5199;&#x5165;<code>/opt/KUSC00402/kusc00402.txt</code></li>
+</ul>
+</blockquote>
+<div style="background: #dbfaf4; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+<dt style="background: #1abc9c; padding: 6px 12px; font-weight: bold; display: block; color: #fff; margin: -12px; margin-bottom: -12px; margin-bottom: 12px;">Hint - &#x63D0;&#x793A;</dt>
+<li> &#x4ED4;&#x7EC6;&#x770B; taints &#x662F;&#x5426;&#x4E3A; NoSchedule
+</li></div>
+<p><strong>&#x7B54;&#x6848;:</strong></p>
+<pre data-role="codeBlock" data-info class="language-"><code>4. &#x5199;&#x5165;&#x7ED3;&#x679C;
+
+&#x200B;```bash
+*$ echo 1 &gt; /opt/KUSC00402/kusc00402.txt
+</code></pre><h2 class="mume-header" id="task-11-multi-containers415">Task 11. multi Containers&#xFF08;4/15%&#xFF09;</h2>
+
+<p>Task weight 4%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] Create a pod named <code>kucc1</code> with a single app container for each of the following images running in side (there may be between 1 and 4 images specified):</li>
+</ul>
+<p>&#x200B;	<code>nginx</code> + <code>redis</code> + <code>memcached</code> + <code>consul</code></p>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x5B57;&#x4E3A;<code>kucc1</code>&#x7684; pod&#xFF0C; &#x5728;pod&#x91CC;&#x9762;&#x5206;&#x522B;&#x4E3A;&#x4EE5;&#x4E0B;&#x6BCF;&#x4E2A;images&#x5355;&#x72EC;&#x8FD0;&#x884C;&#x4E00;&#x4E2A;app container&#xFF08;&#x53EF;&#x80FD;&#x4F1A;&#x6709; 1-4 &#x4E2A; images&#xFF09;&#xFF0C;&#x5BB9;&#x5668;&#x540D;&#x79F0;&#x548C;&#x955C;&#x50CF;&#x5982;&#x4E0B;&#xFF1A;</li>
+</ul>
+<p>&#x200B;	<code>nginx</code> + <code>redis</code> + <code>memcached</code> + <code>consul</code></p>
+</blockquote>
+<h2 class="mume-header" id="task-12-pv---persistent-volumes410">Task 12. pv - persistent volumes&#xFF08;4/10%&#xFF09;</h2>
+
+<p>Task weight: 4%<br>
+Set configuration context:</p>
+<blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] Create a persistent volume with name <code>app-data</code>, of capacity <code>1Gi</code> and access mode <code>ReadWriteMany</code>. The type of volume is <code>hostPath</code> and its location is <code>/srv/app-data</code></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x521B;&#x5EFA;&#x540D;&#x4E3A; <code>app-data</code> &#x7684; persistent volume&#xFF0C; &#x5BB9;&#x91CF;&#x4E3A; <code>1Gi</code>&#xFF0C; &#x8BBF;&#x95EE;&#x6A21;&#x5F0F;&#x4E3A; <code>ReadWriteMany</code>&#x3002; volume&#x7C7B;&#x578B;&#x4E3A; <code>hostPath</code>&#xFF0C; &#x4F4D;&#x4E8E;<code>/srv/app-data</code></li>
+</ul>
+</blockquote>
+<h2 class="mume-header" id="task-13-pvc---persistent-volume-claims710">Task 13. pvc - persistent volume claims&#xFF08;7/10%&#xFF09;</h2>
+
+<p>Task weight: 7%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>
+<p>[ ] Create a new <code>PersistenVolumeClaim</code>:</p>
+<ul>
+<li>Name: <code>pv-volume</code></li>
+<li>Class: <code>csi-hostpath-sc</code></li>
+<li>Capacity: <code>10Mi</code></li>
+</ul>
+</li>
+<li>
+<p>[ ] Create a new pod which mounts the <code>PersistenVolumeClaim</code> as a volume:</p>
+<ul>
+<li>Name: <code>web-server</code></li>
+<li>image: <code>nginx</code></li>
+<li>Mount path: <code>/usr/share/nginx/html</code></li>
+</ul>
+</li>
+<li>
+<p>[ ] Configure the new pod to have <code>ReadWriteOnce</code> access on the volume.</p>
+</li>
+<li>
+<p>[ ] Finally, using <code>kubectl edit</code> or <code>kubectl patch</code> expand the <code>PersistentVolumeClaim</code> to a capacity of <code>70Mi</code> and record that change.</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>
+<p>[ ] &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684; <code>PersistentVolumeClaim</code>&#xFF1A;</p>
+<ul>
+<li>&#x540D;&#x79F0;&#xFF1A; <code>pv-volume</code></li>
+<li>class&#xFF1A; <code>csi-hostpath-sc</code></li>
+<li>&#x5BB9;&#x91CF;&#xFF1A; <code>10Mi</code></li>
+</ul>
+</li>
+<li>
+<p>[ ] &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684; pod&#xFF0C; &#x6B64; pod &#x5C06;&#x4F5C;&#x4E3A; volume &#x6302;&#x8F7D;&#x5230; <code>PersistentVolumeClaim</code>&#xFF1A;</p>
+<ul>
+<li>&#x540D;&#x79F0;&#xFF1A;<code>web-server</code></li>
+<li>image&#xFF1A;<code>nginx</code></li>
+<li>&#x6302;&#x8F7D;&#x8DEF;&#x5F84;&#xFF1A;<code>/usr/share/nginx/html</code></li>
+</ul>
+</li>
+<li>
+<p>[ ] &#x914D;&#x7F6E;&#x65B0;&#x7684; pod&#xFF0C; &#x4EE5;&#x5BF9; volume &#x5177;&#x6709; <code>ReadWriteOnce</code> &#x6743;&#x9650;&#x3002;</p>
+</li>
+<li>
+<p>[ ] &#x6700;&#x540E;&#xFF0C; &#x4F7F;&#x7528; <code>kubectl edit</code> &#x6216;&#x8005; <code>kubectl patch</code> &#x5C06; <code>PersistentVolumeClaim</code> &#x7684;&#x5BB9;&#x91CF;&#x6269;&#x5C55;&#x4E3A; <code>70Mi</code>&#xFF0C; &#x5E76;&#x8BB0;&#x5F55;&#x6B64;&#x6B21;&#x66F4;&#x6539;&#x3002;</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>&#x7B54;&#x6848;:</strong></p>
+<h2 class="mume-header" id="task-14-logs---node-logging530">Task 14. logs - node logging&#xFF08;5/30%&#xFF09;</h2>
+
+<p>Task weight: 5%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] Monitor the logs of pod <code>bar</code> and:</li>
+<li>Exract log lines corresponding to error <code>unable-to-access-website</code></li>
+<li>Write them to <code>/opt/KUTR00101/bar</code></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x76D1;&#x63A7; pod <code>bar</code> &#x7684;&#x65E5;&#x5FD7;&#xFF1A;</li>
+<li>&#x63D0;&#x53D6;&#x4E0E;&#x9519;&#x8BEF; <code>unable-to-access-website</code> &#x76F8;&#x5BF9;&#x5E94;&#x7684;&#x65E5;&#x5FD7;&#x884C;</li>
+<li>&#x5C06;&#x8FD9;&#x4E9B;&#x65E5;&#x5FD7;&#x884C;&#x5199;&#x5165;&#x5230;<code>/opt/KUTR00101/bar</code></li>
+</ul>
+</blockquote>
+<h2 class="mume-header" id="task-15-sidecar---manage-container-stdout730">Task 15. sidecar - Manage container stdout&#xFF08;7/30%&#xFF09;</h2>
+
+<p>Task weight 7%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>context:</strong></p>
+<p>Without changing its existing containers, an existing pod needs to be integrated into kubernetes&apos;s built-in logging architecture (e.g. kubectl logs). Adding a streaming sidecar container is a good and common way to accomplish this requirement.</p>
+<p><strong>Task:</strong></p>
+<ul>
+<li>
+<p>[ ] Add a <code>busybox</code> sidecar container name is <strong>sidedcar</strong> to the existing pod <code>big-corp-app</code>. The new sidecar container has to run the following command:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">/bin/sh -c <span class="token function">tail</span> -f /var/log/legacy-app.log
+</pre></li>
+<li>
+<p>[ ] Use a volume mount named <code>logs</code> to make the file <code>/var/log/legacy-app.log</code> available to the sidecar container.</p>
+</li>
+</ul>
+</blockquote>
+<div style="background: #ffedcc; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+  Don&apos;t modify the existing container.<br>
+  Don&apos;t modify the path of the log file,both containers must access it at <a href>/var/log/big-corp-app.log</a>.</div> 
+<blockquote>
+<p><strong>&#x5185;&#x5BB9;&#xFF1A;</strong></p>
+<p>&#x5728;&#x4E0D;&#x66F4;&#x6539;&#x5176;&#x73B0;&#x6709;&#x5BB9;&#x5668;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C; &#x9700;&#x8981;&#x5C06;&#x4E00;&#x4E2A;&#x73B0;&#x6709;&#x7684; pod &#x96C6;&#x6210;&#x5230; kubernetes &#x7684;&#x5185;&#x7F6E;&#x65E5;&#x5FD7;&#x8BB0;&#x5F55;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x4E2D;&#xFF08;&#x4F8B;&#x5982; kubectl logs&#xFF09; &#x3002; &#x6DFB;&#x52A0; streamimg sidecar &#x5BB9;&#x5668;&#x662F;&#x5B9E;&#x73B0;&#x6B64;&#x8981;&#x6C42;&#x7684;&#x4E00;&#x79CD;&#x597D;&#x65B9;&#x6CD5;&#x3002;</p>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>
+<p>[ ] &#x5C06;&#x4E00;&#x4E2A; <code>busybox</code> sidecar &#x5BB9;&#x5668;&#x540D;&#x79F0;&#x4E3A;<strong>sidecar</strong>&#x6DFB;&#x52A0;&#x5230;&#x73B0;&#x6709;&#x7684; <code>big-corp-app</code>&#x3002; &#x65B0;&#x7684; sidecar &#x5BB9;&#x5668;&#x5FC5;&#x987B;&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">/bin/sh -c <span class="token function">tail</span> -f /var/log/legacy-app.log
+</pre></li>
+<li>
+<p>[ ] &#x4F7F;&#x7528;&#x540D;&#x4E3A; <code>logs</code> &#x7684; volume mount &#x6765;&#x8BA9;&#x6587;&#x4EF6;<code>/var/log/legacy-app.log</code> &#x53EF;&#x7528;&#x4E8E; sidecar &#x5BB9;&#x5668;</p>
+</li>
+</ul>
+</blockquote>
+<div style="background: #ffedcc; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+&#x4E0D;&#x8981;&#x66F4;&#x6539;&#x73B0;&#x6709;&#x5BB9;&#x5668;<br>
+&#x4E0D;&#x8981;&#x4FEE;&#x6539;&#x65E5;&#x5FD7;&#x6587;&#x4EF6;&#x7684;&#x8DEF;&#x5F84;&#xFF0C; &#x4E24;&#x4E2A;&#x5BB9;&#x5668;&#x5FC5;&#x987B;&#x901A;&#x8FC7;<a href>/var/log/big-corp-app.log</a>&#x6765;&#x8BBF;&#x95EE;&#x8BE5;&#x6587;&#x4EF6;&#x3002;</div> 
+<h2 class="mume-header" id="task-16-top---monitor-applications530">Task 16. top - monitor applications&#xFF08;5/30%&#xFF09;</h2>
+
+<p>Task weight: 5%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] From the pod label <code>name=cpu-loader</code>, find pods running high cpu workloads and write the name of the pod consuming most cpu to the file <code>/opt/KUTR00401/KUTR00401.txt</code> (which already exists)</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x901A;&#x8FC7; pod label <code>name=cpu-loader</code>&#xFF0C; &#x627E;&#x5230;&#x8FD0;&#x884C;&#x65F6;&#x5360;&#x7528;&#x5927;&#x91CF; CPU &#x7684; pod&#xFF0C; &#x5E76;&#x5C06;&#x5360;&#x7528; CPU &#x6700;&#x9AD8;&#x7684; pod &#x540D;&#x79F0;&#x5199;&#x5165;&#x5230;&#x6587;&#x4EF6;<code>/opt/KUTR00401/KUTR00401.txt</code>&#xFF08;&#x5DF2;&#x5B58;&#x5728;&#xFF09;</li>
+</ul>
+</blockquote>
+<h2 class="mume-header" id="task-17-daemon---cluster-component1330">Task 17. Daemon - cluster component&#xFF08;13/30%&#xFF09;</h2>
+
+<p>Task weight: 13%<br>
+Set configuration context:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><blockquote>
+<p><strong>Task:</strong></p>
+<ul>
+<li>[ ] A kubernetes woker node, named <code>k8s-worker1</code> is in state <code>NotReady</code>. Investigate why this is the case, and perform any appropriate steps to bring the node to a <code>Ready</code> state, ensuring that any changes are made permanent.</li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">
+  You can ssh to the failed node useing:<br>
+  $ <a href>ssh wk8s-node-0</a><br>
+	You can assume elevated privileges on the node with the following command:<br>
+  $ <a href>sudo -i</a>
+</div>
+<blockquote>
+<p><strong>&#x4EFB;&#x52A1;&#xFF1A;</strong></p>
+<ul>
+<li>[ ] &#x540D;&#x4E3A; <code>k8s-worker1</code> &#x7684; kubernetes worker node &#x5904;&#x4E8E; <code>NotReady</code> &#x72B6;&#x6001;&#x3002; &#x8C03;&#x67E5;&#x53D1;&#x751F;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x7684;&#x539F;&#x56E0;&#xFF0C; &#x5E76;&#x91C7;&#x53D6;&#x76F8;&#x5E94;&#x63AA;&#x65BD;&#x5C06; node &#x6062;&#x590D;&#x4E3A; <code>Ready</code> &#x72B6;&#x6001;&#xFF0C;&#x786E;&#x4FDD;&#x6240;&#x505A;&#x7684;&#x4EFB;&#x4F55;&#x66F4;&#x6539;&#x6C38;&#x4E45;&#x751F;&#x6548;&#x3002;</li>
+</ul>
+</blockquote>
+<div style="background: #CFE2F0; padding: 12px; line-height: 24px; margin-bottom: 24px; ">
+  &#x53EF;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x901A;&#x8FC7; ssh &#x8FDE;&#x63A5;&#x5230;&#x6545;&#x969C; node&#xFF1A;<br>
+  $ <a href>ssh wk8s-node-0</a><br>
+	&#x53EF;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5728;&#x8BE5; node &#x4E0A;&#x83B7;&#x53D6;&#x66F4;&#x9AD8;&#x6743;&#x9650;&#xFF1A;<br>
+  $ <a href>sudo -i</a>
+</div>
+<div style="background: #dbfaf4; padding: 12px; line-height: 24px; margin-bottom: 24px;">
+<dt style="background: #1abc9c; padding: 6px 12px; font-weight: bold; display: block; color: #fff; margin: -12px; margin-bottom: -12px; margin-bottom: 12px;">Hint - &#x63D0;&#x793A;</dt>
+<li> &#x8FD9;&#x9898;&#x4E0E;&#x7B2C;&#x4E8C;&#x9898;&#x6709;&#x5173;&#x8054;
+  </li><li> kiosk@k8s-master:~$ <b>media/cka-setup 17</b>
+</li></div>
+<p><strong>&#x7B54;&#x6848;:</strong></p>
+<ol>
+<li>&#x5207;&#x6362;&#x96C6;&#x7FA4;&#x73AF;&#x5883;</li>
+</ol>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl config use-context ck8s
+</pre><ol start="2">
+<li>&#x786E;&#x8BA4;&#x8282;&#x70B9;&#x72B6;&#x6001;</li>
+</ol>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl get nodes
+NAME          STATUS                     ROLES                  AGE     VERSION
+k8s-master    Ready                      control-plane,master   43d   v1.23.4
+k8s-worker1  <span class="token variable"><span class="token variable">`</span>NotReady<span class="token variable">`</span></span>                  <span class="token operator">&lt;</span>none<span class="token operator">&gt;</span>                 43d   v1.23.3
+k8s-worker2   Ready                      <span class="token operator">&lt;</span>none<span class="token operator">&gt;</span>                 43d   v1.23.3
+
+$ kubectl describe nodes k8s-worker1
+<span class="token punctuation">..</span>.&#x8F93;&#x51FA;&#x7701;&#x7565;<span class="token punctuation">..</span>.
+Conditions:
+  Type                 Status    LastHeartbeatTime                 LastTransitionTime                Reason              Message
+  ----                 ------    -----------------                 ------------------                ------              -------
+  NetworkUnavailable   False     Tue, <span class="token number">31</span> May YYYY <span class="token number">11</span>:25:06 +0000   Tue, <span class="token number">31</span> May YYYY <span class="token number">11</span>:25:06 +0000   CalicoIsUp          Calico is running on this node
+  MemoryPressure       Unknown   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:51:08 +0000   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:53:42 +0000  <span class="token variable"><span class="token variable">`</span>NodeStatusUnknown   Kubelet stopped posting node status.<span class="token variable">`</span></span>
+  DiskPressure         Unknown   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:51:08 +0000   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:53:42 +0000  <span class="token variable"><span class="token variable">`</span>NodeStatusUnknown   Kubelet stopped posting node status.<span class="token variable">`</span></span>
+  PIDPressure          Unknown   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:51:08 +0000   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:53:42 +0000  <span class="token variable"><span class="token variable">`</span>NodeStatusUnknown   Kubelet stopped posting node status.<span class="token variable">`</span></span>
+  Ready                Unknown   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:51:08 +0000   Tue, <span class="token number">31</span> May YYYY <span class="token number">13</span>:53:42 +0000  <span class="token variable"><span class="token variable">`</span>NodeStatusUnknown   Kubelet stopped posting node status.<span class="token variable">`</span></span>
+<span class="token punctuation">..</span>.&#x8F93;&#x51FA;&#x7701;&#x7565;<span class="token punctuation">..</span>.
+</pre><ol start="3">
+<li>&#x542F;&#x52A8;&#x670D;&#x52A1;</li>
+</ol>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ <span class="token function">ssh</span> k8s-worker1
+
+$ <span class="token function">sudo</span> -i
+
+<span class="token comment"># systemctl enable --now kubelet.service</span>
+<span class="token comment"># systemctl status kubelet</span>
+<span class="token operator">&lt;</span>q<span class="token operator">&gt;</span>
+
+<span class="token operator">&lt;</span>Ctrl-D<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>Ctrl-D<span class="token operator">&gt;</span>
+</pre><ol start="4">
+<li>&#x786E;&#x8BA4;</li>
+</ol>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ kubectl get nodes
+NAME          STATUS                     ROLES                  AGE   VERSION
+k8s-master    Ready                      control-plane,master   43d   v1.23.4
+k8s-worker1  <span class="token variable"><span class="token variable">`</span>Ready<span class="token variable">`</span></span>,SchedulingDisabled  <span class="token operator">&lt;</span>none<span class="token operator">&gt;</span>                 43d   v1.23.3
+k8s-worker2   Ready                      <span class="token operator">&lt;</span>none<span class="token operator">&gt;</span>                 43d   v1.23.3
+</pre><h1 class="mume-header" id="a1-%E5%87%86%E5%A4%87%E7%BB%83%E4%B9%A0%E7%8E%AF%E5%A2%83">A1. &#x51C6;&#x5907;&#x7EC3;&#x4E60;&#x73AF;&#x5883;</h1>
+
+<p><strong>[VMware/k8s-master]</strong></p>
+<p><img src="https://gitee.com/suzhen99/k8s/raw/master/images/%E6%88%AA%E5%B1%8F2022-06-01%2000.49.57.png" alt="&#x622A;&#x5C4F;2022-06-01 00.49.57"></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash"><span class="token function">sudo</span> <span class="token function">mount</span> /dev/sr0 /media/
+<span class="token function">sudo</span> <span class="token function">cp</span> -r /media <span class="token builtin class-name">.</span>
+<span class="token function">sudo</span> <span class="token function">chown</span> -R kiosk media/
+media/cka-setup
+
+</pre><h1 class="mume-header" id="a2-exam-grade">A2. exam-grade</h1>
+
+<pre data-role="codeBlock" data-info="bash" class="language-bash">$ media/cka-grade
+
+ Spend Time: up <span class="token number">1</span> hours, <span class="token number">1</span> minutes  Wed 01 Jun YYYY 04:58:06 PM UTC
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+ PASS	Task1.  - RBAC
+ PASS	Task2.  - drain
+ PASS	Task3.  - upgrade
+ PASS	Task4.  - snapshot
+ PASS	Task5.  - network-policy
+ PASS	Task6.  - <span class="token function">service</span>
+ PASS	Task7.  - ingress-nginx
+ PASS	Task8.  - replicas
+ PASS	Task9.  - schedule
+ PASS	Task10. - NoSchedule
+ PASS	Task11. - multi_pods
+ PASS	Task12. - <span class="token function">pv</span>
+ PASS	Task13. - Dynamic-Volume
+ PASS	Task14. - logs
+ PASS	Task15. - Sidecar
+ PASS	Task16. - Metric
+ PASS	Task17. - Daemon <span class="token punctuation">(</span>kubelet, containerd, docker<span class="token punctuation">)</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+ The results of your CKA v1.23:  <span class="token variable"><span class="token variable">`</span>PASS<span class="token variable">`</span></span>	 Your score: <span class="token variable"><span class="token variable">`</span><span class="token number">100</span><span class="token variable">`</span></span>
+</pre><pre data-role="codeBlock" data-info="bash" class="language-bash">$ media/cka-grade <span class="token number">1</span>
+
+ Spend Time: up <span class="token number">1</span> hours, <span class="token number">2</span> minutes  Wed 01 Jun YYYY 04:58:14 PM UTC
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+ <span class="token variable"><span class="token variable">`</span>PASS<span class="token variable">`</span></span>	Task1.  - RBAC
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+ The results of your CKA v1.23:  FAIL	 Your score: <span class="token number">4</span>
+</pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

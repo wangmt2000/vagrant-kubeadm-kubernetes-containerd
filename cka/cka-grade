@@ -16,7 +16,7 @@ function LINE {
 }
 
 function LCOURSE() {
-  echo -n " The results of your CKA v1.24: "
+  echo -n " The results of your CKA v1.28: "
   if [ ${SCORE} -ge 66 ]; then
     print_PASS ; echo -e " Your score: \033[1;32m${SCORE}\033[0;39m"
   else
@@ -76,12 +76,12 @@ function grade_drain {
 
 function grade_upgrade {
   MQ=1
-	if kubectl get nodes k8s-master 2>/dev/null | grep -qw v1.24.2 \
-    && kubectl get nodes k8s-worker1 2>/dev/null | grep -qw v1.24.1 \
-    && kubectl get nodes k8s-worker2 2>/dev/null | grep -qw v1.24.1; then
+	if kubectl get nodes k8s-master 2>/dev/null | grep -qw v1.28.2 \
+    && kubectl get nodes k8s-worker1 2>/dev/null | grep -qw v1.28.1 \
+    && kubectl get nodes k8s-worker2 2>/dev/null | grep -qw v1.28.1; then
     MQ1
   else
-    print_FAIL; echo 'Task3.  - 仅将主节点上的所有 kubernetes 升级到版本 1.24.2'
+    print_FAIL; echo 'Task3.  - 仅将主节点上的所有 kubernetes 升级到版本 1.28.2'
     MQ=0
   fi
   if [ "$MQ" = "1" ]; then
