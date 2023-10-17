@@ -88,7 +88,6 @@ function Ingress-Nginx {
     ## env
     kubectl create ns ing-internal
     kubectl -n ing-internal run hi \
-    #--image=registry.cn-hangzhou.aliyuncs.com/k-cka/ping \
     --image=registry.cn-hangzhou.aliyuncs.com/ckalab/ping \
     --overrides='{"spec": { "nodeSelector": {"kubernetes.io/hostname": "k8s-worker2"}}}'
     kubectl -n ing-internal expose pod hi --port=5678
@@ -196,7 +195,8 @@ function Metric {
     --dry-run=client -o yaml > cpu-loader.yml
     sed -i 's/app:/name:/' cpu-loader.yml
     kubectl apply -f cpu-loader.yml
-    kubectl apply -f /content/metrics-server.yaml
+#已经有了metrics-serverr    
+#kubectl apply -f /content/metrics-server.yaml
 }
 
 function Daemon {

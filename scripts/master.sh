@@ -173,5 +173,5 @@ kubectl apply -f https://nrjqvxfy3a2n.objectstorage.ap-tokyo-1.oci.customer-oci.
 
 chown vagrant:vagrant /home/vagrant/.bashrc
 
-sudo cp /vagrant/cka/content /
+sudo cp -r /vagrant/cka/content/. /content/
 

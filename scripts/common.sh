@@ -22,7 +22,7 @@ sudo swapoff -a
 
 # keeps the swap off during reboot
 (crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
-sudo apt-get update -y
+#sudo apt-get update -y
 # Install CRI-O Runtime
 
 VERSION="$(echo ${KUBERNETES_VERSION} | grep -oE '[0-9]+\.[0-9]+')"
@@ -83,6 +83,7 @@ echo PermitRootLogin yes \
 
 sudo systemctl restart sshd
 
+timedatectl set-timezone Asia/Shanghai
 
 
 
@@ -237,10 +238,15 @@ else
     AURL=https://apt.kubernetes.io/
 fi
 
-sudo curl -fsSLo $KFILE $KURL/apt/doc/apt-key.gpg
+#sudo curl -fsSLo $KFILE $KURL/apt/doc/apt-key.gpg
+
+#sudo curl -fsSLo $KFILE https://gitee.com/wangmt2000/share/releases/download/k8s-apt-key/apt-key.gpg
+
+#sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://gitee.com/wangmt2000/share/releases/download/k8s-apt-key/apt-key.gpg
+sudo cp /vagrant/apt-key.gpg  /etc/apt/keyrings/kubernetes-archive-keyring.gpg
 
 sudo tee /etc/apt/sources.list.d/kubernetes.list <<EOF >/dev/null
-deb [signed-by=$KFILE] $AURL kubernetes-xenial main
+deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://mirror.nju.edu.cn/kubernetes/apt kubernetes-xenial main
 EOF
 
 sudo apt -y update
