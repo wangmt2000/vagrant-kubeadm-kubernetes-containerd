@@ -174,7 +174,7 @@ if ! curl --connect-timeout 2 google.com &>/dev/null; then
     M2='endpoint = ["https://docker.nju.edu.cn"]'
 
     sudo sed -i \
-        -e "/sandbox_image/s+$REISTRY_OLD/pause3.6+$REGISTRY_NEW/pause3.9+" \
+        -e "/sandbox_image/s+registry.k8s.io/pause:3.6+registry.aliyuncs.com/google_containers/pause:3.9+" \
         -e "/registry.mirrors/a\        $M1" \
         -e "/registry.mirrors/a\          $M2" \
         /etc/containerd/config.toml 
