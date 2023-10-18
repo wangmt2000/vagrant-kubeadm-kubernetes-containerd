@@ -175,6 +175,5 @@ chown vagrant:vagrant /home/vagrant/.bashrc
 
 sudo cp -r /vagrant/cka/content/. /content/
 sudo cp -r /vagrant/cka/  /home/vagrant/
-
-
-
+sudo chmod +r /content/*
+chmod +r /home/vagrant/cka/*
