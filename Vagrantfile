@@ -24,7 +24,9 @@ Vagrant.configure("2") do |config|
     config.vm.box = settings["software"]["box"]
   end
   config.vm.box_check_update = true
-
+  config.ssh.disable_deprecated_algorithms = true
+  #vm https://developer.hashicorp.com/vagrant/docs/vagrantfile/machine_settings
+#  ssh  https://developer.hashicorp.com/vagrant/docs/vagrantfile/ssh_settings
   config.vm.define "master" do |master|
     master.vm.hostname = "k8s-master"
     master.vm.network "private_network", ip: settings["network"]["control_ip"]
