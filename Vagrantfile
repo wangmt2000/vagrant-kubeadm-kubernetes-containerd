@@ -25,6 +25,12 @@ Vagrant.configure("2") do |config|
   end
   config.vm.box_check_update = true
   config.ssh.disable_deprecated_algorithms = true
+  #此设置将 未将 SSH 客户端配置为允许使用 SSH-RSA 密钥类型连接到主机 和主机密钥算法。默认值为 false
+  config.ssh.insert_key = false
+  #当前自动插入重新生成ssh-key，有概率导致失败。
+  #默认情况下，如果设置为 ，Vagrant 将自动插入 用于 SSH 的密钥对，替换 Vagrant 在机器内默认的不安全密钥 如果检测到。
+  #如果您已经使用私钥对访客进行身份验证，或者依赖 在默认的不安全密钥上，将不使用此选项。如果设置为false 
+  #Vagrant 不会自动向客户机添加密钥对。truefalse
   #vm https://developer.hashicorp.com/vagrant/docs/vagrantfile/machine_settings
 #  ssh  https://developer.hashicorp.com/vagrant/docs/vagrantfile/ssh_settings
   config.vm.define "master" do |master|
