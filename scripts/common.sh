@@ -225,7 +225,8 @@ sudo apt -y install apt-transport-https ca-certificates curl
 
 ## 添加 Kubernetes apt 仓库
 #sudo mkdir /etc/apt/keyrings
-if [! -d "/etc/apt/keyrings" ]; then
+
+if [ ! -d "/etc/apt/keyrings" ]; then
     # 如果不存在，尝试创建目录
     sudo mkdir /etc/apt/keyrings
     if [ $? -ne 0 ]; then
@@ -263,10 +264,10 @@ sudo apt-get install -y jq
 # 官方考试版本-CKA
 #CKx_URL=https://training.linuxfoundation.cn/certificates/1
 
-:<<EOF
+#:<<EOF
 # 官方考试版本-CKS
-CKx_URL=https://training.linuxfoundation.cn/certificates/16
-EOF
+#CKx_URL=https://training.linuxfoundation.cn/certificates/16
+#EOF
 
 #KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
 KV=1.31
@@ -274,8 +275,8 @@ KV=1.31
 echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
 
 # 列出所有小版本
-sudo apt-cache madison kubelet | grep ${KV#v}
-
+#sudo apt-cache madison kubelet | grep ${KV#v}
+sudo apt-cache madison kubelet 
 # 安装 kubelet、kubeadm 和 kubectl 考试版本
 sudo apt -y install \
     kubelet=${KV#v}.1-00 \
