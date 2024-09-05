@@ -45,7 +45,7 @@ if ! curl --connect-timeout 2 google.com &>/dev/null; then
 
     sudo kubeadm config images pull \
         --image-repository $RURL \
-        --kubernetes-version ${KV#v}.1
+        --kubernetes-version ${KV#v}.0
 
    # sudo sed -i \
     #    -e "/imageRepository/s+:.*+: $RURL+" \
@@ -78,7 +78,7 @@ sudo sed -i \
     -e "/serviceSubnet/s+:.*+: $SERVICE_CIDR+" \
     -e "/name/s+:.*+: $NODENAME+" \
     -e "/clusterName/s+:.*+: ck8s+" \
-    -e "/kubernetesVersion/s+:.*+: ${KV#v}.1+" kubeadm-config.yaml
+    -e "/kubernetesVersion/s+:.*+: ${KV#v}.0+" kubeadm-config.yaml
     
 #sudo sed -i '/serviceSubnet: =$SERVICE_CIDR/a \  podSubnet: $POD_CIDR' kubeadm-config.yaml
 sudo sed -i '/serviceSubnet: 172.17.1.0\/18/a \  podSubnet: 172.16.1.0\/16' kubeadm-config.yaml
