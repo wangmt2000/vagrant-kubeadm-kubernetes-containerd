@@ -198,9 +198,10 @@ TFILE=crictl-v1.31.1-linux-amd64.tar.gz
 
 #curl -LO# https://gitee.com/wangmt2000/share/releases/download/ccrictl/crictl-v1.28.0-linux-amd64.tar.gz
 curl -LO# https://gitee.com/wangmt2000/share/releases/download/ccrictl1.31/crictl-v1.31.1-linux-amd64.tar.gz
-
+curl -LO# https://gitee.com/wangmt2000/share/releases/download/nerdctl/nerdctl-1.7.6-windows-amd64.tar.gz
 # 解压 crictl
 tar -xf $TFILE
+tar Cxzvvf /usr/local/bin nerdctl-1.7.6-linux-amd64.tar.gz
 
 # 安装 crictl 命令
 sudo cp crictl /usr/bin/
