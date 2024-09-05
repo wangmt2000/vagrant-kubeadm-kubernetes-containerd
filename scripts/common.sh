@@ -223,19 +223,20 @@ sudo usermod -aG root $USER
 sudo apt -y install apt-transport-https ca-certificates curl
 
 ## 添加 Kubernetes apt 仓库
-sudo mkdir /etc/apt/keyrings &>/dev/null
+sudo mkdir /etc/apt/keyrings
 
-if ! curl --connect-timeout 2 google.com &>/dev/null; then
+
+#if ! curl --connect-timeout 2 google.com &>/dev/null; then
   # C. 国内
   export AURL=http://mirrors.aliyun.com/kubernetes-new/core/stable/v1.29/deb
-else
+#else
   # F. 国外
-  export AURL=http://pkgs.k8s.io/core:/stable:/v1.29/deb
-fi
+ # export AURL=http://pkgs.k8s.io/core:/stable:/v1.29/deb
+#fi
   export KFILE=/etc/apt/keyrings/kubernetes-apt-keyring.gpg
   curl -fsSL ${AURL}/Release.key \
     | sudo gpg --dearmor -o ${KFILE}
-  sudo tee /etc/apt/sources.list.d/kubernetes.list <<-EOF
+sudo tee /etc/apt/sources.list.d/kubernetes.list <<-EOF
 deb [signed-by=${KFILE}] ${AURL} /
 EOF
 
