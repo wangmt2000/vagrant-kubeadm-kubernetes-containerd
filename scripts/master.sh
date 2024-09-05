@@ -9,24 +9,26 @@ NODENAME=$(hostname -s)
 
 
 # 官方考试版本 - CKAD
-CKx_URL=https://training.linuxfoundation.cn/certificates/4
+#CKx_URL=https://training.linuxfoundation.cn/certificates/4
 
-KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
+#KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
 
-echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
-
-
-KV=1.28
+#echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
+#KV=1.31
+# 列出所有小版本
+#sudo apt-cache madison kubelet | grep ${KV#v}
+# 安装 kubelet、kubeadm 和 kubectl 考试版本
+KV=1.31
 
 # 列出所有小版本
-sudo apt-cache madison kubelet | grep ${KV#v}
-
+#sudo apt-cache madison kubelet | grep ${KV#v}
+sudo apt-get update -y
+sudo apt-cache madison kubelet 
 # 安装 kubelet、kubeadm 和 kubectl 考试版本
 sudo apt -y install \
-    kubelet=${KV#v}.1-00 \
-    kubeadm=${KV#v}.1-00 \
-    kubectl=${KV#v}.1-00
-
+    kubelet=${KV#v}.0-1.1 \
+    kubeadm=${KV#v}.0-1.1 \
+    kubectl=${KV#v}.0-1.1
 
 
 

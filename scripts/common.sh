@@ -276,6 +276,7 @@ echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
 
 # 列出所有小版本
 #sudo apt-cache madison kubelet | grep ${KV#v}
+sudo apt-get update -y
 sudo apt-cache madison kubelet 
 # 安装 kubelet、kubeadm 和 kubectl 考试版本
 sudo apt -y install \
