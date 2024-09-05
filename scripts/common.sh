@@ -257,7 +257,7 @@ EOF
 #####echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 #sudo apt-get update -y
 #sudo apt-get install -y kubelet="$KUBERNETES_VERSION" kubectl="$KUBERNETES_VERSION" kubeadm="$KUBERNETES_VERSION"
-#sudo apt-get update -y
+sudo apt-get update -y
 sudo apt-get install -y jq
 
 
