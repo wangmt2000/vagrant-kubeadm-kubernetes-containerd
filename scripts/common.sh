@@ -223,32 +223,22 @@ sudo usermod -aG root $USER
 sudo apt -y install apt-transport-https ca-certificates curl
 
 ## 添加 Kubernetes apt 仓库
-sudo mkdir -p /etc/apt/keyrings &>/dev/null
-
-KFILE=/etc/apt/keyrings/kubernetes-archive-keyring.gpg
+sudo mkdir /etc/apt/keyrings &>/dev/null
 
 if ! curl --connect-timeout 2 google.com &>/dev/null; then
-    # C. 国内
-    KURL=http://k8s.ruitong.cn:8080/K8s
-    AURL=https://mirror.nju.edu.cn/kubernetes/apt
+  # C. 国内
+  export AURL=http://mirrors.aliyun.com/kubernetes-new/core/stable/v1.29/deb
 else
-    # A. 国外
-    KURL=https://packages.cloud.google.com
-    AURL=https://apt.kubernetes.io/
+  # F. 国外
+  export AURL=http://pkgs.k8s.io/core:/stable:/v1.29/deb
 fi
-
-#sudo curl -fsSLo $KFILE $KURL/apt/doc/apt-key.gpg
-
-#sudo curl -fsSLo $KFILE https://gitee.com/wangmt2000/share/releases/download/k8s-apt-key/apt-key.gpg
-
-#sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://gitee.com/wangmt2000/share/releases/download/k8s-apt-key/apt-key.gpg
-sudo cp /vagrant/apt-key.gpg  /etc/apt/keyrings/kubernetes-archive-keyring.gpg
-
-sudo tee /etc/apt/sources.list.d/kubernetes.list <<EOF >/dev/null
-deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://mirror.nju.edu.cn/kubernetes/apt kubernetes-xenial main
+  export KFILE=/etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  curl -fsSL ${AURL}/Release.key \
+    | sudo gpg --dearmor -o ${KFILE}
+  sudo tee /etc/apt/sources.list.d/kubernetes.list <<-EOF
+deb [signed-by=${KFILE}] ${AURL} /
 EOF
 
-sudo apt -y update
 
 
 #####echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -267,7 +257,7 @@ CKx_URL=https://training.linuxfoundation.cn/certificates/16
 EOF
 
 #KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
-KV=1.28
+KV=1.29
 
 echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
 
