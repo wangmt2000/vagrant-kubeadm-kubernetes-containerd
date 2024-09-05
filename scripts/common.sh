@@ -165,20 +165,44 @@ sudo sed -i \
     -e '/SystemdCgroup/s+false+true+' \
     /etc/containerd/config.toml
 
-if ! curl --connect-timeout 2 google.com &>/dev/null; then
+#if ! curl --connect-timeout 2 google.com &>/dev/null; then
     # C. 国内
-    REISTRY_OLD=registry.k8s.io
-    REGISTRY_NEW=registry.aliyuncs.com/google_containers
-    M1='[plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]'
-    M2='endpoint = ["https://docker.nju.edu.cn"]'
+  #  REISTRY_OLD=registry.k8s.io
+   # REGISTRY_NEW=registry.aliyuncs.com/google_containers
+   # M1='[plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]'
+   # M2='endpoint = ["https://docker.nju.edu.cn"]'
 
-    sudo sed -i \
-        -e "/sandbox_image/s+registry.k8s.io/pause:3.8+registry.aliyuncs.com/google_containers/pause:3.10" \
-        -e "/registry.mirrors/a\        $M1" \
-        -e "/registry.mirrors/a\          $M2" \
-        /etc/containerd/config.toml 
-fi
+   # sudo sed -i \
+   #     -e "/sandbox_image/s+registry.k8s.io/pause:3.8+registry.aliyuncs.com/google_containers/pause:3.10" \
+   #     -e "/registry.mirrors/a\        $M1" \
+   #     -e "/registry.mirrors/a\          $M2" \
+   #     /etc/containerd/config.toml 
+#fi
 #sudo sed -i -e "s/registry.k8s.io\/pause:3.8/registry.aliyuncs.com\/google_containers\/pause:3.10/g" /etc/containerd/config.toml
+
+containerd config default \
+  | sed -e '/SystemdCgroup/s+false+true+' \
+      -e "/sandbox_image/s+3.6+3.9+" \
+  | sudo tee /etc/containerd/config.toml
+
+if ! curl --connect-timeout 2 google.com &>/dev/null; then
+  # C. 国内
+  export M1='[plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]'
+  export M1e='endpoint = ["https://docker.nju.edu.cn"]'
+  export M2='[plugins."io.containerd.grpc.v1.cri".registry.mirrors."quay.io"]'
+  export M2e='endpoint = ["https://quay.nju.edu.cn"]'
+  export M3='[plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.k8s.io"]'
+  export M3e='endpoint = ["https://k8s.mirror.nju.edu.cn"]'
+  sudo sed -i /etc/containerd/config.toml \
+    -e "/sandbox_image/s+registry.k8s.io+registry.aliyuncs.com/google_containers+" \
+    -e "/registry.mirrors/a\        $M1" \
+    -e "/registry.mirrors/a\          $M1e" \
+    -e "/registry.mirrors/a\        $M2" \
+    -e "/registry.mirrors/a\          $M2e" \
+    -e "/registry.mirrors/a\        $M3" \
+    -e "/registry.mirrors/a\          $M3e"
+fi
+sudo sed -i -e "s/registry.aliyuncs.com\/pause:3.8/registry.aliyuncs.com\/google_containers\/pause:3.10/g" /etc/containerd/config.toml
 sudo systemctl daemon-reload
 sudo systemctl restart containerd
 
