@@ -173,24 +173,21 @@ if ! curl --connect-timeout 2 google.com &>/dev/null; then
     M2='endpoint = ["https://docker.nju.edu.cn"]'
 
     sudo sed -i \
-        -e "/sandbox_image/s+registry.k8s.io/pause:3.6+registry.aliyuncs.com/google_containers/pause:3.9+" \
+        -e "/sandbox_image/s+registry.k8s.io/pause:3.8+registry.aliyuncs.com/google_containers/pause:3.10" \
         -e "/registry.mirrors/a\        $M1" \
         -e "/registry.mirrors/a\          $M2" \
         /etc/containerd/config.toml 
 fi
-
-
+#sudo sed -i -e "s/registry.k8s.io\/pause:3.8/registry.aliyuncs.com\/google_containers\/pause:3.10/g" /etc/containerd/config.toml
 sudo systemctl daemon-reload
 sudo systemctl restart containerd
 
 ## 下载 crictl 压缩包
-if ! curl --connect-timeout 2 google.com &>/dev/null; then
-    # C. 国内
-    CURL=http://k8s.ruitong.cn:8080/K8s
-else
+##   CURL=http://k8s.ruitong.cn:8080/K8s
+#else
     # A. 国外
     CURL=https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.28.0
-fi
+#fi
 
 #TFILE=crictl-v1.28.0-linux-amd64.tar.gz
 TFILE=crictl-v1.31.1-linux-amd64.tar.gz
