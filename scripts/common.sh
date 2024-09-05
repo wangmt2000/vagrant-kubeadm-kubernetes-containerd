@@ -192,11 +192,12 @@ else
     CURL=https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.28.0
 fi
 
-TFILE=crictl-v1.28.0-linux-amd64.tar.gz
-
+#TFILE=crictl-v1.28.0-linux-amd64.tar.gz
+TFILE=crictl-v1.31.1-linux-amd64.tar.gz
 #curl -LO# $CURL/$TFILE
 
-curl -LO# https://gitee.com/wangmt2000/share/releases/download/ccrictl/crictl-v1.28.0-linux-amd64.tar.gz
+#curl -LO# https://gitee.com/wangmt2000/share/releases/download/ccrictl/crictl-v1.28.0-linux-amd64.tar.gz
+curl -LO# https://gitee.com/wangmt2000/share/releases/download/ccrictl1.31/crictl-v1.31.1-linux-amd64.tar.gz
 
 # 解压 crictl
 tar -xf $TFILE
@@ -223,12 +224,22 @@ sudo usermod -aG root $USER
 sudo apt -y install apt-transport-https ca-certificates curl
 
 ## 添加 Kubernetes apt 仓库
-sudo mkdir /etc/apt/keyrings
-
+#sudo mkdir /etc/apt/keyrings
+if [! -d "/etc/apt/keyrings" ]; then
+    # 如果不存在，尝试创建目录
+    sudo mkdir /etc/apt/keyrings
+    if [ $? -ne 0 ]; then
+        echo "创建 /etc/apt/keyrings 目录失败，但不影响后续操作。"
+    else
+        echo "成功创建 /etc/apt/keyrings 目录。"
+    fi
+else
+    echo "/etc/apt/keyrings 目录已存在，继续执行后续操作。"
+fi
 
 #if ! curl --connect-timeout 2 google.com &>/dev/null; then
   # C. 国内
-  export AURL=http://mirrors.aliyun.com/kubernetes-new/core/stable/v1.29/deb
+  export AURL=http://mirrors.aliyun.com/kubernetes-new/core/stable/v1.31/deb
 #else
   # F. 国外
  # export AURL=http://pkgs.k8s.io/core:/stable:/v1.29/deb
@@ -236,7 +247,7 @@ sudo mkdir /etc/apt/keyrings
   export KFILE=/etc/apt/keyrings/kubernetes-apt-keyring.gpg
   curl -fsSL ${AURL}/Release.key \
     | sudo gpg --dearmor -o ${KFILE}
-sudo tee /etc/apt/sources.list.d/kubernetes.list <<-EOF
+  sudo tee /etc/apt/sources.list.d/kubernetes.list <<-EOF
 deb [signed-by=${KFILE}] ${AURL} /
 EOF
 
@@ -258,7 +269,7 @@ CKx_URL=https://training.linuxfoundation.cn/certificates/16
 EOF
 
 #KV=$(curl -s $CKx_URL | grep -Eo 软件版本.*v[0-9].[0-9]+ | awk '{print $NF}')
-KV=1.29
+KV=1.31
 
 echo -e " The exam is based on Kubernetes: \e[1;34m${KV#v}\e[0;0m"
 
