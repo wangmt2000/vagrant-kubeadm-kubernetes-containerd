@@ -138,9 +138,9 @@ EOF
 cat $AFILE
 
 # 导入公钥
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
     | sudo apt-key add -
-
+curl -fsSL https://mirror.nju.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
 # W: Key is stored in legacy trusted.gpg keyring
 sudo cp /etc/apt/trusted.gpg /etc/apt/trusted.gpg.d
 
