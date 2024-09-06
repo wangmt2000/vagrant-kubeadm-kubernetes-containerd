@@ -1,0 +1,7 @@
+使用 dos2unix 工具（如果系统中没有安装，可先安装该工具）：
+sudo apt-get install dos2unix（在基于 Debian/Ubuntu 的系统上）。
+sudo yum install dos2unix（在基于 Red Hat/CentOS 的系统上）。
+安装完成后，使用以下命令转换脚本文件：
+dos2unix your_script.sh（将 your_script.sh 替换为实际的脚本文件名）。
+
+sed -i 's/\r$//' your_script.sh your_script.sh

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #ssh 免密
 
 # 生成 keypair
