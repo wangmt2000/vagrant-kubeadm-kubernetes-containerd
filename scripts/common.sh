@@ -319,6 +319,6 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 export URL1=registry.cn-hangzhou.aliyuncs.com/ckalab
 sudo ctr -n k8s.io image pull $URL1/cni:v3.26.0
-sudo ctr -n k8s.io image tag $URL1/cni:v3.26 docker.io/calico/cni:v3.26.0
+sudo ctr -n k8s.io image tag $URL1/cni:v3.26.0 docker.io/calico/cni:v3.26.0
 
 
