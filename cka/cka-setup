@@ -84,6 +84,9 @@ function Ingress-Nginx {
             sudo ctr -n k8s.io image pull $URL1/$i:$IMGV
             sudo ctr -n k8s.io image tag $URL1/$i:$IMGV $URL2/$i:$IMGV"   
     done
+    sudo ctr -n k8s.io image pull $URL1/nginx:latest
+    sudo ctr -n k8s.io image tag $URL1/nginx:latest docker.io/library/nginx:latest
+    
     ## env
     kubectl create ns ing-internal
     kubectl -n ing-internal run hi \
