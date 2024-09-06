@@ -2,6 +2,15 @@ vagrant-vagrant-kubeadm-kubernetes-containerd
 介绍
 使用vagrant 生成基于cka考试环境虚拟机。
 
+基于2023年9月的CKA考题
+2024年9月修改基于1.31版本。
+
+
+
+
+
+
+
 {以下是 Gitee 平台说明，您可以替换此简介 Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台 无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 https://gitee.com/enterprises}
 
 软件架构
@@ -18,7 +27,40 @@ window（需要用迅雷或科学）： https://releases.hashicorp.com/vagrant/2
 
 虚拟机扩展：https://download.virtualbox.org/virtualbox/7.0.10/Oracle_VM_VirtualBox_Extension_Pack-7.0.10.vbox-extpack
 
-git clone本项目，然后命令行下vagrant up
+git clone本项目，然后进入本项目目录，执行
+
+```shell
+vagrant up
+```
+
+
+```shell
+
+#如果master成功完成，其它节点如worker1 有问题的话，可以
+vagrant destroy worker1
+vagrant up worker1
+```
+
+
+```shell
+
+#setup cka联系环境
+vagrant ssh master
+
+sudo -i
+
+/vagrant/cka/cka-setup
+
+
+#cka评分
+
+/vagrant/cka/cka-grade
+
+```
+
+
+
+
 # Vagrantfile and Scripts to Automate Kubernetes Setup using Kubeadm [Practice Environment for CKA/CKAD and CKS Exams]
 
 ## Documentation
@@ -122,3 +164,5 @@ vagrant up
 vagrant destroy -f
 ```
 
+
+本项目为技术演示、学习之目的。脚本为参照培训机构东方瑞通苏振老师脚本修改及GitHub上项目修改。在此表示感谢。
